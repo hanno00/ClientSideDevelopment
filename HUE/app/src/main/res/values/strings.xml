@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HUE</string>
+    <string name="title_activity_light_select">LightSelectActivity</string>
 </resources>
