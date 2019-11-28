@@ -33,7 +33,15 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
     private RequestQueue queue;
-    final private String url = "http://192.168.1.179/api/2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI/lights";
+
+    final private String emulatorToken = "newdeveloper";
+    final private String HUEToken = "2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI";
+    final private String emulatorUrl = "http://145.49.12.80:80/api/" + emulatorToken;
+    final private String HUEUrl = "http://192.168.1.179/api/" + HUEToken;
+
+    final private String url = HUEUrl;
+
+    public boolean tempResult = false;
     public TextView textView;
     public ArrayList<Light> lights = new ArrayList<>();
     public List<Triple<SeekBar, TextView, Integer>> rgb = new ArrayList<>();
@@ -71,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
             });
             counter++;
         }
-        requestJson();
+        requestJson(HUEUrl);
 //
 //        float[] henk = new float[3];
 //        Color.colorToHSV(computeHue2(0,143,143),henk);
@@ -90,10 +98,6 @@ public class MainActivity extends AppCompatActivity {
         int saturation = (int)(hsl[1]*255.0);
         int brightness = (int)(hsl[2]*255.0);
 
-//        Log.d("Kleur1","" + computeHue(r,g,b));
-//        Log.d("Bietje stront", "" + hsl[0]);
-//        Log.d("Kleur3", "H:" + hue + " S:" + saturation + " L:" + brightness);
-
         for (Light light : lights) {
             light.setOn(true);
             light.setHue(hue);
@@ -105,11 +109,32 @@ public class MainActivity extends AppCompatActivity {
         imageView.setBackgroundColor(Color.HSVToColor(hsl));
     }
 
-    public void requestJson() {
+    public boolean pingUrl(String url){
+        tempResult = false;
         try {
             final JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.GET,
                     url,
+                    null,
+                    response -> {
+                        tempResult = true;
+                    },
+                    error -> {
+                        Log.d("Connection Error", error.toString());
+                    }
+            );
+        } catch (Exception e) {
+            Log.d("Exception", e.toString());
+        }
+
+        return tempResult;
+    }
+
+    public void requestJson(String url) {
+        try {
+            final JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.GET,
+                    url + "/lights",
                     null,
                     response -> {
                         Log.d("VOLLEY_REQ", response.toString());
@@ -155,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
         JSONArray array = new JSONArray();
         array.put(data);
+        Log.i("request",url + "/" + l.getKey() + "/state");
 
         try {
             final JsonObjectRequest request = new JsonObjectRequest(

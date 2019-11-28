@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HUE</string>
+    <string name="title_activity_bridge">BridgeActivity</string>
 </resources>
