@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.hue.DataType.Triple;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Light> lights = new ArrayList<>();
     public List<Triple<SeekBar, TextView, Integer>> rgb = new ArrayList<>();
     public int[] rgbInt = new int[3];
-    public int counter = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-            counter++;
+
         }
         requestJson(HUEUrl);
 //
@@ -91,18 +92,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onclick(View view) {
+//
+//        float[] hsl = convertRGBtoHSB(rgbInt);
+//
+//        int hue = (int)((double)hsl[0]/360.0 * 65536.0);
+//        int saturation = (int)(hsl[1]*255.0);
+//        int brightness = (int)(hsl[2]*255.0);
 
-        float[] hsl = convertRGBtoHSB(rgbInt);
+        // Dit hierboven is omgezet naar 1 methode
 
-        int hue = (int)((double)hsl[0]/360.0 * 65536.0);
-        int saturation = (int)(hsl[1]*255.0);
-        int brightness = (int)(hsl[2]*255.0);
+        float[] hsl = ColorUtilities.convertRGBtoHSB(rgbInt);
+
+        int[] vals = ColorUtilities.convertHSBtoSeperateValues(hsl);
 
         for (Light light : lights) {
             light.setOn(true);
-            light.setHue(hue);
-            light.setSaturation(saturation);
-            light.setBrightness(brightness);
+            light.setHue(vals[0]);
+            light.setSaturation(vals[1]);
+            light.setBrightness(vals[2]);
             sendAction(light);
         }
         ImageView imageView = findViewById(R.id.imageView);
@@ -205,28 +212,5 @@ public class MainActivity extends AppCompatActivity {
         return hsb;
     }
 
-    public class Triple<T, U, V> {
 
-        private final T first;
-        private final U second;
-        private final V third;
-
-        public Triple(T first, U second, V third) {
-            this.first = first;
-            this.second = second;
-            this.third = third;
-        }
-
-        public T getFirst() {
-            return first;
-        }
-
-        public U getSecond() {
-            return second;
-        }
-
-        public V getThird() {
-            return third;
-        }
-    }
 }

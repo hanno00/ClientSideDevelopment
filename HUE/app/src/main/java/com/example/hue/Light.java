@@ -1,9 +1,12 @@
 package com.example.hue;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Light {
+public class Light implements Parcelable {
 
     JSONObject state;
 
@@ -31,6 +34,21 @@ public class Light {
         this.name = jo.getString("name");
         this.modelid = jo.getString("modelid");
 
+    }
+
+    public Light(int brightness, int hue, int saturation, String type, String name, boolean on) {
+        this.brightness = brightness;
+        this.hue = hue;
+        this.saturation = saturation;
+        this.type = type;
+        this.name = name;
+        this.on = on;
+    }
+
+    public Light(Parcel in) {
+        this.hue = in.readInt();
+        this.saturation = in.readInt();
+        this.brightness = in.readInt();
     }
 
     @Override
@@ -131,5 +149,27 @@ public class Light {
     public void setModelid(String modelid) {
         this.modelid = modelid;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.hue);
+        parcel.writeInt(this.saturation);
+        parcel.writeInt(this.brightness);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Light createFromParcel(Parcel in) {
+            return new Light(in);
+        }
+
+        public Light[] newArray(int size) {
+            return new Light[size];
+        }
+    };
     //endregion
 }
