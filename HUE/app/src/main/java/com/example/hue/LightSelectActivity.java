@@ -1,5 +1,6 @@
 package com.example.hue;
 
+import android.database.Observable;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -29,14 +30,16 @@ import java.util.Random;
 public class LightSelectActivity extends AppCompatActivity {
 
     private RequestQueue queue;
-    private final String token = "2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI";
+    private final String token = "jaGi5XSBOhu75gGVWHJqnG9AyXEEAfVJ7Ei-XfMd";
     private final String url = "http://192.168.1.179/api/" + token + "/lights";
+    private final String fullURL = "http://192.168.1.179/api/2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI/lights";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
     private ArrayList<String> testArray = new ArrayList<>(Arrays.asList("Light4","Light6","Light12","Light16","Light24","Light30"));
     private ArrayList<Light> lightArray = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +65,9 @@ public class LightSelectActivity extends AppCompatActivity {
         mAdapter = new RecyclerViewAdapter(lightArray);
         recyclerView.setAdapter(mAdapter);
 
-        new Thread(() -> {
-            requestJson();
-            mAdapter.notifyDataSetChanged();
-        }).start();
+        requestJson();
+
+        mAdapter.notifyDataSetChanged();
     }
 
     private ArrayList<Light> generateRandomLights() {
@@ -82,7 +84,7 @@ public class LightSelectActivity extends AppCompatActivity {
         try {
             final JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.GET,
-                    url,
+                    fullURL,
                     null,
                     response -> {
                         Log.d("VOLLEY_REQ", response.toString());

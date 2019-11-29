@@ -60,7 +60,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final Light l = mDataset.get(i);
         myViewHolder.tViewName.setText(mDataset.get(i).getName());
         myViewHolder.tViewState.setText("" + mDataset.get(i).isOn());
-        myViewHolder.tViewID.setText(mDataset.get(i).getModelid());
+        myViewHolder.tViewID.setText("Light " + mDataset.get(i).getKey());
 
         //System.out.println(ColorUtilities.hsvToRgb(l.getHue(), l.getSaturation(), l.getBrightness()));
         myViewHolder.view.setOnClickListener(new View.OnClickListener() {
