@@ -1,6 +1,7 @@
 package com.example.hue;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -17,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -30,58 +32,44 @@ public class BridgeActivity extends AppCompatActivity {
 
     private RequestQueue queue;
 
-    private TextView tvEmulator;
-    private TextView tvHUE;
+    private EditText editName;
+    private EditText editIP;
+    private EditText editToken;
+    private TextView statusTV;
 
-    private boolean emulatorIsOnline;
-    private boolean HUEIsOnline;
-
-    public static ArrayList<ArrayList<Light>> lightArrays = new ArrayList<>();
-    private ArrayList<Light> emulatorLights = new ArrayList<>();
-    private ArrayList<Light> HUELights = new ArrayList<>();
-
+    public static ArrayList<Light> lights = new ArrayList<>();
 
     final private String emulatorUrl = "http://192.168.1.187:80/api/newdeveloper";
-    final private String HUEUrl = "http://192.168.1.179/api/2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI";
-
-    private Bridge emulator = new Bridge(emulatorUrl, "Emulator", 0);
-    private Bridge HUE = new Bridge(HUEUrl, "HUE", 0);
+    final private String HUEUrl = "192.168.1.179/api/2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bridge);
 
-        lightArrays.add(HUELights);
-        lightArrays.add(emulatorLights);
-
-        this.emulatorIsOnline = false;
-        this.HUEIsOnline = false;
         this.queue = Volley.newRequestQueue(this);
 
-        pingEmulator();
-        pingHUE();
+        this.editName = findViewById(R.id.editName);
+        this.editIP = findViewById(R.id.editIP);
+        this.editToken = findViewById(R.id.editToken);
+        this.statusTV = findViewById(R.id.statusTV);
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("BRIDGE_PREF", 0); // 0 - for private mode
+        editName.setText(pref.getString("NAME_KEY","No name found"));
+        editIP.setText(pref.getString("IP_KEY","No IP found"));
+        editToken.setText(pref.getString("TOKEN_KEY","No Token found"));
 
-        tvEmulator = findViewById(R.id.textViewEmulator);
-        tvHUE = findViewById(R.id.textViewBridge);
     }
 
     //region ping
-    public void pingEmulator(){
+    public void pingBridge(String url, String token){
         try {
             final JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.GET,
-                    emulator.getUrl() + "/lights",
+                    url + "/" + token + "/lights",
                     null,
                     response -> {
-
-                        tvEmulator.setText("Emulator\nStatus: Available");
+                        statusTV.setText("Available");
                         Log.d("VOLLEY_REQ", response.toString());
                         String tekst = "";
                         Iterator<String> iter = response.keys();
@@ -89,7 +77,7 @@ public class BridgeActivity extends AppCompatActivity {
                             String key = iter.next();
                             try {
                                 Light light = new Light((JSONObject) response.get(key), key);
-                                emulatorLights.add(light);
+                                lights.add(light);
                                 tekst += "\n" + light.toString();
                             } catch (JSONException e) {
                                 Log.d("VOLLEY_ERR1", e.toString());
@@ -98,63 +86,50 @@ public class BridgeActivity extends AppCompatActivity {
                     },
                     error ->{
                         Log.d("VOLLEY_ERRREquest", error.toString());
-                        tvEmulator.setText("Emulator\nStatus: Not Available");
+                        statusTV.setText("Not Available");
                     }
             );
-
             queue.add(request);
         } catch (Exception e) {
             Log.d("Exception", e.toString());
         }
     }
 
-    public void pingHUE(){
-        try {
-            final JsonObjectRequest request = new JsonObjectRequest(
-                    Request.Method.GET,
-                    HUE.getUrl() + "/lights",
-                    null,
-                    response -> {
-
-                        tvHUE.setText("HUE\nStatus: Available");
-                        Log.d("VOLLEY_REQ", response.toString());
-                        String tekst = "";
-                        Iterator<String> iter = response.keys();
-                        while (iter.hasNext()) {
-                            String key = iter.next();
-                            try {
-                                Light light = new Light((JSONObject) response.get(key), key);
-                                HUELights.add(light);
-                                tekst += "\n" + light.toString();
-                            } catch (JSONException e) {
-                                Log.d("VOLLEY_ERR1", e.toString());
-                            }
-                        }
-                    },
-                    error ->{
-                        Log.d("VOLLEY_ERRREquest", error.toString());
-                        tvHUE.setText("HUE\nStatus: Not Available");
-                    }
-            );
-
-            queue.add(request);
-        } catch (Exception e) {
-            Log.d("Exception", e.toString());
-        }
-    }
     //endregion ping
 
-    public void connectToEmulator(View view) {
+    public void pingOnClick(View view) {
+        String url = editIP.getText().toString() + "/api";
+        String token = editToken.getText().toString();
+
+        pingBridge(url,token);
+    }
+
+    public void connectOnClick(View view) {
+        String url = editIP.getText().toString();
+        String name = editName.getText().toString();
+
         Intent intent = new Intent(view.getContext(), LightSelectActivity.class);
-        intent.putExtra("BRIDGE", emulator);
-        intent.putExtra("INDEX",1);
+        intent.putExtra("BRIDGE", new Bridge(url,name));
         view.getContext().startActivity(intent);
     }
 
-    public void connectToHUE(View view) {
-        Intent intent = new Intent(view.getContext(), LightSelectActivity.class);
-        intent.putExtra("BRIDGE", HUE);
-        intent.putExtra("INDEX",0);
-        view.getContext().startActivity(intent);
+    public void onPause() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("BRIDGE_PREF", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("NAME_KEY",editName.getText().toString());
+        editor.putString("IP_KEY",editIP.getText().toString());
+        editor.putString("TOKEN_KEY",editToken.getText().toString());
+        editor.apply();
+        super.onPause();
+    }
+
+    public void onDestroy() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("BRIDGE_PREF", 0); // 0 - for private mode
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("NAME_KEY",editName.getText().toString());
+        editor.putString("IP_KEY",editIP.getText().toString());
+        editor.putString("TOKEN_KEY",editToken.getText().toString());
+        editor.apply();
+        super.onDestroy();
     }
 }

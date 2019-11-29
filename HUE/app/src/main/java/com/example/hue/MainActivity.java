@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean tempResult = false;
     public TextView textView;
-    public ArrayList<Light> lights = new ArrayList<>();
+    public static ArrayList<Light> lights = new ArrayList<>();
     public List<Triple<SeekBar, TextView, Integer>> rgb = new ArrayList<>();
     public int[] rgbInt = new int[3];
 
@@ -237,6 +237,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }

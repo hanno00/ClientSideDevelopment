@@ -49,7 +49,7 @@ public class LightSelectActivity extends AppCompatActivity {
 
         Bridge bridge = (Bridge) getIntent().getSerializableExtra("BRIDGE");
         System.out.println(bridge);
-        lightArray = BridgeActivity.lightArrays.get(getIntent().getIntExtra("INDEX",0));
+        lightArray = BridgeActivity.lights;
 
         this.queue = Volley.newRequestQueue(this);
 

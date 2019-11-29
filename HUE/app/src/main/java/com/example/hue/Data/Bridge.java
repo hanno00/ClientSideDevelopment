@@ -5,13 +5,11 @@ import java.io.Serializable;
 public class Bridge implements Serializable {
     private String url;
     private String name;
-    private int port;
     private boolean isAvailable;
 
-    public Bridge(String url, String name, int port) {
+    public Bridge(String url, String name) {
         this.url = url;
         this.name = name;
-        this.port = port;
         this.isAvailable = false;
     }
 
@@ -29,14 +27,6 @@ public class Bridge implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
     }
 
     public boolean isAvailable() {
