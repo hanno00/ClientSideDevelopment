@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Random;
 
 public class LightSelectActivity extends AppCompatActivity {
 
@@ -41,8 +42,11 @@ public class LightSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_select);
+
         this.queue = Volley.newRequestQueue(this);
-        requestJson();
+        //requestJson();
+        //lightArray = generateRandomLights();
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         // use this setting to improve performance if you know that changes
@@ -54,9 +58,23 @@ public class LightSelectActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        
+
         mAdapter = new RecyclerViewAdapter(lightArray);
         recyclerView.setAdapter(mAdapter);
+
+        new Thread(() -> {
+            requestJson();
+            mAdapter.notifyDataSetChanged();
+        }).start();
+    }
+
+    private ArrayList<Light> generateRandomLights() {
+        ArrayList<Light> lightsArr = new ArrayList<>();
+        Random r = new Random();
+        for (int q = 0; q <= 10; q++) {
+            lightsArr.add(new Light(r.nextInt(360), r.nextInt(65535), r.nextInt(360), "lol", "Light " + q, true));
+        }
+        return lightsArr;
     }
 
 

@@ -2,6 +2,7 @@ package com.example.hue.RecyclerViewStuff;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.hue.ColorUtilities;
 import com.example.hue.Light;
+import com.example.hue.LightSpecificsActivity;
 import com.example.hue.R;
 
 import java.io.IOException;
@@ -50,6 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return viewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         final Light l = mDataset.get(i);
@@ -57,7 +62,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         myViewHolder.tViewState.setText("" + mDataset.get(i).isOn());
         myViewHolder.tViewID.setText(mDataset.get(i).getModelid());
 
-        myViewHolder.iViewColor.setBackgroundColor(Color.HSVToColor(new float[]{l.getHue(),l.getSaturation(),l.getBrightness()}));
+        //System.out.println(ColorUtilities.hsvToRgb(l.getHue(), l.getSaturation(), l.getBrightness()));
+        myViewHolder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // new intent to specifics of light
+                Intent intent = new Intent(view.getContext(), LightSpecificsActivity.class);
+                intent.putExtra("LightObject", mDataset.get(i));
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        int[] rgbVals = ColorUtilities.HSBtoRGB(new float[] {l.getHue(), l.getSaturation(), l.getBrightness()});
+        myViewHolder.iViewColor.setBackgroundColor(
+                Color.rgb(rgbVals[0], rgbVals[1], rgbVals[2])
+        );
 
     }
 
