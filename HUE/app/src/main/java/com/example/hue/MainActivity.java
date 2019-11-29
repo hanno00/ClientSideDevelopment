@@ -12,35 +12,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.hue.DataType.Triple;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hue.Data.Bridge;
+import com.example.hue.Data.Light;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+
+import javax.xml.transform.ErrorListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private RequestQueue queue;
 
-    final private String emulatorToken = "newdeveloper";
-    final private String HUEToken = "2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI";
-    final private String emulatorUrl = "http://145.49.12.80:80/api/" + emulatorToken;
-    final private String HUEUrl = "http://192.168.1.179/api/" + HUEToken;
-
-    final private String url = HUEUrl;
+    private String url;
 
     public boolean tempResult = false;
     public TextView textView;
@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bridge bridge = (Bridge) getIntent().getSerializableExtra("BRIDGE");
+        url = bridge.getUrl();
 
         textView = findViewById(R.id.textView);
         this.queue = Volley.newRequestQueue(this);
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
-        requestJson(HUEUrl);
+        requestJson(url);
 //
 //        float[] henk = new float[3];
 //        Color.colorToHSV(computeHue2(0,143,143),henk);
@@ -170,34 +173,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendAction(Light l) {
 
-        int r = 255;
-        int g = 255;
-        int b = 0;
-
         HashMap data = new HashMap();
         data.put("on", l.isOn());
         data.put("bri", l.getBrightness());
-//        data.put("hue", kleur);
         data.put("hue",l.getHue());
         data.put("sat", l.getSaturation());
-//        data.put("","");
-//        data.put("","");
-//        data.put("","");
-//        data.put("","");
 
         JSONArray array = new JSONArray();
         array.put(data);
         Log.i("request",url + "/" + l.getKey() + "/state");
-
+        System.out.println(url);
         try {
-            final JsonObjectRequest request = new JsonObjectRequest(
+            final CustomJsonArrayRequest request = new CustomJsonArrayRequest(
                     Request.Method.PUT,
-                    url + "/" + l.getKey() + "/state",
+                    url + "/lights/" + l.getKey() + "/state",
                     new JSONObject(data),
                     response -> {
                         Log.d("VOLLEY_REQ", response.toString());
                     },
-                    error -> Log.d("VOLLEY_ERR2", error.toString())
+                    null
             );
 
             queue.add(request);
@@ -210,6 +204,62 @@ public class MainActivity extends AppCompatActivity {
         float[] hsb = new float[3];
         Color.RGBToHSV(rgb[0],rgb[1],rgb[2],hsb);
         return hsb;
+    }
+
+
+        private final T first;
+        private final U second;
+        private final V third;
+
+        public Triple(T first, U second, V third) {
+            this.first = first;
+            this.second = second;
+            this.third = third;
+        }
+
+        public T getFirst() {
+            return first;
+        }
+
+        public U getSecond() {
+            return second;
+        }
+
+        public V getThird() {
+            return third;
+        }
+    }
+
+    public class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
+
+        /**
+         * Creates a new request.
+         * @param method the HTTP method to use
+         * @param url URL to fetch the JSON from
+         * @param jsonRequest A {@link JSONObject} to post with the request. Null is allowed and
+         *   indicates no parameters will be posted along with request.
+         * @param listener Listener to receive the JSON response
+         * @param errorListener Error listener, or null to ignore errors.
+         */
+        public CustomJsonArrayRequest(int method, String url, JSONObject jsonRequest,
+                                      Response.Listener<JSONArray> listener, ErrorListener errorListener) {
+            super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(), listener,
+                    (Response.ErrorListener) errorListener);
+        }
+
+        @Override
+        protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+            try {
+                String jsonString = new String(response.data,
+                        HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                return Response.success(new JSONArray(jsonString),
+                        HttpHeaderParser.parseCacheHeaders(response));
+            } catch (UnsupportedEncodingException e) {
+                return Response.error(new ParseError(e));
+            } catch (JSONException je) {
+                return Response.error(new ParseError(je));
+            }
+        }
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.hue;
+package com.example.hue.Data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
