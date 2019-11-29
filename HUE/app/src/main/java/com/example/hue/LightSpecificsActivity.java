@@ -9,6 +9,7 @@ import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -42,6 +43,7 @@ public class LightSpecificsActivity extends AppCompatActivity {
     private int[] rgbInt = new int[3];
     private Button button;
     private Switch aSwitch;
+    private boolean lightState;
 
 
     @Override
@@ -65,23 +67,30 @@ public class LightSpecificsActivity extends AppCompatActivity {
 
 
         red.setProgress(rgbVals[0]);
-        blue.setProgress(rgbVals[1]);
-        green.setProgress(rgbVals[2]);
+        green.setProgress(rgbVals[1]);
+        blue.setProgress(rgbVals[2]);
 
         //set texts to seekbar value
         redText = findViewById(R.id.hueText);
-        blueText = findViewById(R.id.satText);
         greenText = findViewById(R.id.briText);
+        blueText = findViewById(R.id.satText);
 
         redText.setText("" + red.getProgress());
-        blueText.setText("" + blue.getProgress());
         greenText.setText("" + green.getProgress());
+        blueText.setText("" + blue.getProgress());
 
         aSwitch = findViewById(R.id.switch1);
 
         aSwitch.setChecked(l.isOn());
         aSwitch.setTextOff("OFF");
         aSwitch.setTextOn("ON");
+
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                lightState = b;
+            }
+        });
 
         button = findViewById(R.id.button2);
 
@@ -95,6 +104,7 @@ public class LightSpecificsActivity extends AppCompatActivity {
                 l.setHue(vals[0]);
                 l.setSaturation(vals[1]);
                 l.setBrightness(vals[2]);
+                l.setOn(lightState);
 
                 sendAction(l);
             }
@@ -114,7 +124,7 @@ public class LightSpecificsActivity extends AppCompatActivity {
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     triple.getSecond().setText("" + triple.getFirst().getProgress());
                     rgbInt[triple.getThird()] = triple.getFirst().getProgress();
-                    lightColor.setBackgroundColor(Color.rgb(red.getProgress(), green.getProgress(), blue.getProgress()));
+                    lightColor.setBackgroundColor(Color.rgb(red.getProgress(), blue.getProgress(), green.getProgress()));
                 }
 
                 @Override
