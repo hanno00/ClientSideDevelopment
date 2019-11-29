@@ -58,8 +58,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         final Light l = mDataset.get(i);
+        String state = mDataset.get(i).isOn() ? "Light On" : "Light Off";
         myViewHolder.tViewName.setText(mDataset.get(i).getName());
-        myViewHolder.tViewState.setText("" + mDataset.get(i).isOn());
+        myViewHolder.tViewState.setText(state);
         myViewHolder.tViewID.setText("Light " + mDataset.get(i).getKey());
 
         //System.out.println(ColorUtilities.hsvToRgb(l.getHue(), l.getSaturation(), l.getBrightness()));

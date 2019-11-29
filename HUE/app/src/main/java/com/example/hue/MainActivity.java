@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         return hsb;
     }
 
-    public class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
+    public static class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
 
         /**
          * Creates a new request.

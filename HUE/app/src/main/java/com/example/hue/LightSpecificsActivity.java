@@ -44,7 +44,7 @@ import javax.xml.transform.ErrorListener;
 public class LightSpecificsActivity extends AppCompatActivity {
 
     private RequestQueue queue;
-    final private String url = "http://192.168.1.179/api/2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI/lights";
+    final private String url = "http://192.168.1.187/api/newdeveloper/lights";
     private SeekBar red, blue, green;
     private TextView redText, blueText, greenText;
     private ImageView lightColor;
@@ -78,8 +78,8 @@ public class LightSpecificsActivity extends AppCompatActivity {
 
 
         red.setProgress(rgbVals[0]);
-        green.setProgress(rgbVals[1]);
-        blue.setProgress(rgbVals[2]);
+        green.setProgress(rgbVals[2]);
+        blue.setProgress(rgbVals[1]);
 
         //set texts to seekbar value
         redText = findViewById(R.id.hueText);
@@ -165,7 +165,7 @@ public class LightSpecificsActivity extends AppCompatActivity {
         array.put(data);
 
         try {
-            final CustomJsonArrayRequest request = new CustomJsonArrayRequest(
+            final MainActivity.CustomJsonArrayRequest request = new MainActivity.CustomJsonArrayRequest(
                     Request.Method.PUT,
                     pref.getString("IP_KEY","No IP found") + "/api/" + pref.getString("TOKEN_KEY","No IP found") + "/lights/" + l.getKey() + "/state",
                     new JSONObject(data),
