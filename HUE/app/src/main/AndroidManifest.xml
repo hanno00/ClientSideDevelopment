@@ -20,11 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".LightSelectActivity"/>
+        <activity android:name=".LightSpecificsActivity"/>
 
         </activity>
-        <activity android:name=".LightSpecificsActivity" />
-        <activity android:name=".LightSelectActivity" />
     </application>
 
 </manifest>

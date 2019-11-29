@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hue.Data.Bridge;
 import com.example.hue.Data.Light;
 import com.example.hue.RecyclerViewStuff.RecyclerViewAdapter;
 
@@ -45,6 +46,10 @@ public class LightSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_select);
         mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        Bridge bridge = (Bridge) getIntent().getSerializableExtra("BRIDGE");
+        System.out.println(bridge);
+        lightArray = BridgeActivity.lightArrays.get(getIntent().getIntExtra("INDEX",0));
 
         this.queue = Volley.newRequestQueue(this);
 

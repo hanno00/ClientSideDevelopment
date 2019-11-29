@@ -18,6 +18,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.hue.Data.Light;
+import com.android.volley.toolbox.Volley;
+import com.example.hue.Data.Light;
 import com.example.hue.DataType.Triple;
 
 import org.json.JSONArray;
@@ -48,7 +50,9 @@ public class LightSpecificsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_specifics);
 
-        Light l = getIntent().getParcelableExtra("LightObject");
+        queue = Volley.newRequestQueue(this);
+
+        Light l = (Light) getIntent().getSerializableExtra("LightObject");
 
         //convert HSB to RGB
 
@@ -93,7 +97,7 @@ public class LightSpecificsActivity extends AppCompatActivity {
                 l.setSaturation(vals[1]);
                 l.setBrightness(vals[2]);
 
-                //sendAction(l);
+                sendAction(l);
             }
         });
 
@@ -128,7 +132,6 @@ public class LightSpecificsActivity extends AppCompatActivity {
     }
 
     public void sendAction(Light l) {
-
 
         HashMap data = new HashMap();
         data.put("on", l.isOn());

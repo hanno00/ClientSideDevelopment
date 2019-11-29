@@ -1,14 +1,11 @@
 package com.example.hue.Data;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Light implements Parcelable {
+import java.io.Serializable;
 
-    JSONObject state;
+public class Light implements Serializable {
 
     private boolean on;
     private int brightness;
@@ -23,7 +20,7 @@ public class Light implements Parcelable {
 
     public Light(JSONObject jo, String keyID) throws JSONException {
         this.key = keyID;
-        this.state = jo.getJSONObject("state");
+        JSONObject state = jo.getJSONObject("state");
         this.on = state.getBoolean("on");
         this.brightness = state.getInt("bri");
         this.hue = state.getInt("hue");
@@ -45,12 +42,6 @@ public class Light implements Parcelable {
         this.on = on;
     }
 
-    public Light(Parcel in) {
-        this.hue = in.readInt();
-        this.saturation = in.readInt();
-        this.brightness = in.readInt();
-    }
-
     @Override
     public String toString() {
         return "Name: " + this.name +
@@ -68,14 +59,6 @@ public class Light implements Parcelable {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public JSONObject getState() {
-        return state;
-    }
-
-    public void setState(JSONObject state) {
-        this.state = state;
     }
 
     public boolean isOn() {
@@ -150,26 +133,5 @@ public class Light implements Parcelable {
         this.modelid = modelid;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.hue);
-        parcel.writeInt(this.saturation);
-        parcel.writeInt(this.brightness);
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Light createFromParcel(Parcel in) {
-            return new Light(in);
-        }
-
-        public Light[] newArray(int size) {
-            return new Light[size];
-        }
-    };
     //endregion
 }
