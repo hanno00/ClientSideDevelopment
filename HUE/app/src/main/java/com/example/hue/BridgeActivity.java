@@ -104,13 +104,13 @@ public class BridgeActivity extends AppCompatActivity {
     //endregion ping
 
     public void connectToEmulator(View view) {
-        Intent intent = new Intent(view.getContext(), MainActivity.class);
+        Intent intent = new Intent(view.getContext(), LightSelectActivity.class);
         intent.putExtra("BRIDGE", emulator);
         view.getContext().startActivity(intent);
     }
 
     public void connectToHUE(View view) {
-        Intent intent = new Intent(view.getContext(), MainActivity.class);
+        Intent intent = new Intent(view.getContext(), LightSelectActivity.class);
         intent.putExtra("BRIDGE", HUE);
         view.getContext().startActivity(intent);
     }

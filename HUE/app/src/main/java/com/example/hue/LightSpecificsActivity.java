@@ -11,11 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.hue.Data.Light;
 import com.example.hue.DataType.Triple;
 
 import org.json.JSONArray;
@@ -38,6 +40,7 @@ public class LightSpecificsActivity extends AppCompatActivity {
     private List<Triple<SeekBar, TextView, Integer>> rgb = new ArrayList<>();
     private int[] rgbInt = new int[3];
     private Button button;
+    private Switch aSwitch;
 
 
     @Override
@@ -70,6 +73,12 @@ public class LightSpecificsActivity extends AppCompatActivity {
         redText.setText("" + red.getProgress());
         blueText.setText("" + blue.getProgress());
         greenText.setText("" + green.getProgress());
+
+        aSwitch = findViewById(R.id.switch1);
+
+        aSwitch.setChecked(l.isOn());
+        aSwitch.setTextOff("OFF");
+        aSwitch.setTextOn("ON");
 
         button = findViewById(R.id.button2);
 

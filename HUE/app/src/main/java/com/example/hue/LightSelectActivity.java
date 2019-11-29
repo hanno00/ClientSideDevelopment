@@ -7,17 +7,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.hue.Data.Light;
 import com.example.hue.RecyclerViewStuff.RecyclerViewAdapter;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
-import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +34,7 @@ public class LightSelectActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private ArrayList<String> testArray = new ArrayList<>(Arrays.asList("Light4","Light6","Light12","Light16","Light24","Light30"));
     private ArrayList<Light> lightArray = new ArrayList<>();
@@ -45,10 +44,9 @@ public class LightSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_select);
+        mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 
         this.queue = Volley.newRequestQueue(this);
-        //requestJson();
-        //lightArray = generateRandomLights();
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
@@ -67,7 +65,19 @@ public class LightSelectActivity extends AppCompatActivity {
 
         requestJson();
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshDataSet();
+            }
+        });
+
+    }
+
+    private void refreshDataSet() {
+        requestJson();
         mAdapter.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private ArrayList<Light> generateRandomLights() {
@@ -81,12 +91,15 @@ public class LightSelectActivity extends AppCompatActivity {
 
 
     public void requestJson() {
+
+
         try {
             final JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.GET,
                     fullURL,
                     null,
                     response -> {
+                        lightArray.clear();
                         Log.d("VOLLEY_REQ", response.toString());
                         String tekst = "";
                         Iterator<String> iter = response.keys();

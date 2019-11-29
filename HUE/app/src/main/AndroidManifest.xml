@@ -23,6 +23,8 @@
         <activity android:name=".MainActivity">
 
         </activity>
+        <activity android:name=".LightSpecificsActivity" />
+        <activity android:name=".LightSelectActivity" />
     </application>
 
 </manifest>

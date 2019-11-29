@@ -14,7 +14,8 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hue.ColorUtilities;
-import com.example.hue.Light;
+import com.example.hue.Data.Light;
+import com.example.hue.Data.Light;
 import com.example.hue.LightSpecificsActivity;
 import com.example.hue.R;
 
