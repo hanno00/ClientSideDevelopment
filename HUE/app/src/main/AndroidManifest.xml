@@ -24,7 +24,6 @@
         <activity android:name=".LightSelectActivity"/>
         <activity android:name=".LightSpecificsActivity"/>
 
-        </activity>
     </application>
 
 </manifest>

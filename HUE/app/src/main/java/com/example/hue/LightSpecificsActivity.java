@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.hue.Data.Light;
 import com.android.volley.toolbox.Volley;
 import com.example.hue.Data.Light;
 import com.example.hue.DataType.Triple;
