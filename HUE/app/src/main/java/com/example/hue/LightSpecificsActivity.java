@@ -34,7 +34,7 @@ import java.util.Map;
 public class LightSpecificsActivity extends AppCompatActivity {
 
     private RequestQueue queue;
-    final private String url = "http://192.168.1.187/api/newdeveloper/lights";
+    final private String url = "http://192.168.1.179/api/jaGi5XSBOhu75gGVWHJqnG9AyXEEAfVJ7Ei-XfMd/lights";
     private SeekBar red, blue, green;
     private TextView redText, blueText, greenText;
     private ImageView lightColor;
@@ -68,8 +68,8 @@ public class LightSpecificsActivity extends AppCompatActivity {
 
 
         red.setProgress(rgbVals[0]);
-        green.setProgress(rgbVals[1]);
-        blue.setProgress(rgbVals[2]);
+        green.setProgress(rgbVals[2]);
+        blue.setProgress(rgbVals[1]);
 
         //set texts to seekbar value
         redText = findViewById(R.id.hueText);
@@ -153,14 +153,14 @@ public class LightSpecificsActivity extends AppCompatActivity {
         array.put(data);
 
         try {
-            final JsonObjectRequest request = new JsonObjectRequest(
+            final MainActivity.CustomJsonArrayRequest request = new MainActivity.CustomJsonArrayRequest(
                     Request.Method.PUT,
                     url + "/" + l.getKey() + "/state",
                     new JSONObject(data),
                     response -> {
                         Log.d("VOLLEY_REQ", response.toString());
                     },
-                    error -> Log.d("VOLLEY_ERR2", error.toString())
+                    null
             );
 
             queue.add(request);

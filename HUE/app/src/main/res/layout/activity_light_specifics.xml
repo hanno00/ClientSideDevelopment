@@ -23,6 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:max="255"
+        android:thumbTint="@color/red"
+        android:progressTint="@color/red"
         app:layout_constraintEnd_toEndOf="@+id/hueText"
         app:layout_constraintHorizontal_bias="0.444"
         app:layout_constraintStart_toStartOf="@+id/hueText"
@@ -34,6 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:max="255"
+        android:thumbTint="@color/green"
+        android:progressTint="@color/green"
         app:layout_constraintEnd_toEndOf="@+id/satText"
         app:layout_constraintHorizontal_bias="0.611"
         app:layout_constraintStart_toStartOf="@+id/satText"
@@ -45,6 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:max="255"
+        android:thumbTint="@color/blue"
+        android:progressTint="@color/blue"
         app:layout_constraintEnd_toEndOf="@+id/briText"
         app:layout_constraintStart_toStartOf="@+id/briText"
         app:layout_constraintTop_toBottomOf="@+id/briText" />
@@ -93,12 +99,46 @@
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:text="State"
+        android:layout_marginTop="24dp"
         android:textOff="OFF"
         android:textOn="ON"
         app:layout_constraintEnd_toStartOf="@+id/lightSpecColorImage"
-        app:layout_constraintHorizontal_bias="0.53"
+        app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/LightState" />
+
+    <TextView
+        android:id="@+id/lightStateOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="Off"
+        app:layout_constraintBottom_toBottomOf="@+id/switch1"
+        app:layout_constraintEnd_toStartOf="@+id/switch1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/switch1"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="60dp"
+        android:text="On"
+        app:layout_constraintBottom_toBottomOf="@+id/switch1"
+        app:layout_constraintEnd_toStartOf="@+id/lightSpecColorImage"
+        app:layout_constraintStart_toEndOf="@+id/switch1"
+        app:layout_constraintTop_toTopOf="@+id/switch1"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/LightState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="State"
+        app:layout_constraintEnd_toEndOf="@+id/textView8"
+        app:layout_constraintStart_toStartOf="@+id/lightStateOn"
+        app:layout_constraintTop_toTopOf="@+id/lightSpecColorImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>
