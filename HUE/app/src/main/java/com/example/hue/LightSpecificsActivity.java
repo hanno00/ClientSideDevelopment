@@ -34,7 +34,7 @@ import java.util.Map;
 public class LightSpecificsActivity extends AppCompatActivity {
 
     private RequestQueue queue;
-    final private String url = "http://192.168.1.179/api/2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI/lights";
+    final private String url = "http://192.168.1.187/api/newdeveloper/lights";
     private SeekBar red, blue, green;
     private TextView redText, blueText, greenText;
     private ImageView lightColor;
@@ -54,6 +54,7 @@ public class LightSpecificsActivity extends AppCompatActivity {
         queue = Volley.newRequestQueue(this);
 
         Light l = (Light) getIntent().getSerializableExtra("LightObject");
+
 
         //convert HSB to RGB
 

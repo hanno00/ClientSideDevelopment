@@ -41,7 +41,7 @@ public class BridgeActivity extends AppCompatActivity {
     private ArrayList<Light> HUELights = new ArrayList<>();
 
 
-    final private String emulatorUrl = "http://192.168.1.24:80/api/newdeveloper";
+    final private String emulatorUrl = "http://192.168.1.187:80/api/newdeveloper";
     final private String HUEUrl = "http://192.168.1.179/api/2kRHeQYCLXt2cnrABObLUG3sC3xSmnL5etpHtEZI";
 
     private Bridge emulator = new Bridge(emulatorUrl, "Emulator", 0);
@@ -77,16 +77,31 @@ public class BridgeActivity extends AppCompatActivity {
         try {
             final JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.GET,
-                    emulatorUrl,
+                    emulator.getUrl() + "/lights",
                     null,
                     response -> {
+
                         tvEmulator.setText("Emulator\nStatus: Available");
+                        Log.d("VOLLEY_REQ", response.toString());
+                        String tekst = "";
+                        Iterator<String> iter = response.keys();
+                        while (iter.hasNext()) {
+                            String key = iter.next();
+                            try {
+                                Light light = new Light((JSONObject) response.get(key), key);
+                                emulatorLights.add(light);
+                                tekst += "\n" + light.toString();
+                            } catch (JSONException e) {
+                                Log.d("VOLLEY_ERR1", e.toString());
+                            }
+                        }
                     },
-                    error -> {
+                    error ->{
+                        Log.d("VOLLEY_ERRREquest", error.toString());
                         tvEmulator.setText("Emulator\nStatus: Not Available");
-                        Log.d("Connection Error EMULAT", error.toString());
                     }
             );
+
             queue.add(request);
         } catch (Exception e) {
             Log.d("Exception", e.toString());
@@ -132,6 +147,7 @@ public class BridgeActivity extends AppCompatActivity {
     public void connectToEmulator(View view) {
         Intent intent = new Intent(view.getContext(), LightSelectActivity.class);
         intent.putExtra("BRIDGE", emulator);
+        intent.putExtra("INDEX",1);
         view.getContext().startActivity(intent);
     }
 
