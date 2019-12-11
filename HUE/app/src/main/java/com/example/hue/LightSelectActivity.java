@@ -96,8 +96,6 @@ public class LightSelectActivity extends AppCompatActivity {
 
 
     public void requestJson() {
-
-
         try {
             final JsonObjectRequest request = new JsonObjectRequest(
                     Request.Method.GET,
