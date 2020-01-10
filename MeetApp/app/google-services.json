@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "408234992458",
+    "firebase_url": "https://meetapp-719c5.firebaseio.com",
+    "project_id": "meetapp-719c5",
+    "storage_bucket": "meetapp-719c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408234992458:android:e88fc3632fa3638732d7b3",
+        "android_client_info": {
+          "package_name": "com.example.meetapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408234992458-t2hdo6bgbudnhvme1j7b14u78egpdg1n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.meetapp",
+            "certificate_hash": "6b83c84266e6dc057d7455dc976f862aef6ce89a"
+          }
+        },
+        {
+          "client_id": "408234992458-g8nrr0ohv6aqeo6q8uq6c04k53jv41jk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBt-WzurTytpbG5vcW53LdOmDccWYoawiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408234992458-g8nrr0ohv6aqeo6q8uq6c04k53jv41jk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
