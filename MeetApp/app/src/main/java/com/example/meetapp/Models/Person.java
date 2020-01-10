@@ -17,6 +17,13 @@ public class Person {
         this.isWaypoint = isWaypoint;
     }
 
+    public Person(String name, String lobbyUUID, boolean isWaypoint) {
+        this.name = name;
+        this.lobbyUUID = lobbyUUID;
+        this.isWaypoint = isWaypoint;
+        this.UUID = java.util.UUID.randomUUID().toString();
+    }
+
     //region getters and setters
     public String getName() {
         return name;

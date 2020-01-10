@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">MeetApp</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_group">GroupActivity</string>
+    <string name="dialogBoxText">Wil je je bij een groep aansluiten, of wil je je eigen groep maken?</string>
 </resources>
