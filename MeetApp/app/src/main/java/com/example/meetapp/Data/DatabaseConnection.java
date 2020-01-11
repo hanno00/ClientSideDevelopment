@@ -14,20 +14,28 @@ import java.util.ArrayList;
 
 public class DatabaseConnection {
 
+    private DatabaseListener databaseListener;
+
     private ArrayList<Lobby> lobbies;
     private ArrayList<Person> persons;
 
     private DatabaseReference dbRefLobbies;
     private DatabaseReference dbRefPersons;
 
-    public DatabaseConnection(){
-        lobbies = new ArrayList<>();
-        persons = new ArrayList<>();
+    public DatabaseConnection(DatabaseListener databaseListener){
+        this.databaseListener = databaseListener;
 
-        dbRefLobbies = FirebaseDatabase.getInstance().getReference("lobbies");
-        dbRefPersons = FirebaseDatabase.getInstance().getReference("persons");
+        this.lobbies = new ArrayList<>();
+        this.persons = new ArrayList<>();
+
+        this.dbRefLobbies = FirebaseDatabase.getInstance().getReference("lobbies");
+        this.dbRefPersons = FirebaseDatabase.getInstance().getReference("persons");
 
         attachListeners();
+    }
+
+    public void updatePerson(Person person){
+        dbRefPersons.child(person.getUUID()).setValue(person);
     }
 
     public ArrayList<Person> getPersonsByLobbyUUID(String lobbyUUID){
@@ -71,11 +79,12 @@ public class DatabaseConnection {
         dbRefLobbies.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                lobbies.clear();
                 for (DataSnapshot node : dataSnapshot.getChildren()) {
-                    lobbies.clear();
                     Lobby lobby = node.getValue(Lobby.class);
                     lobbies.add(lobby);
                 }
+                databaseListener.onDatabaseChanged();
             }
 
             @Override
@@ -87,11 +96,12 @@ public class DatabaseConnection {
         dbRefPersons.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                persons.clear();
                 for (DataSnapshot node : dataSnapshot.getChildren()) {
-                    persons.clear();
                     Person person = node.getValue(Person.class);
                     persons.add(person);
                 }
+                databaseListener.onDatabaseChanged();
             }
 
             @Override

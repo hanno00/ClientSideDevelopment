@@ -3,6 +3,7 @@ package com.example.meetapp.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,8 +12,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.meetapp.Models.Person;
 import com.example.meetapp.R;
 import com.example.meetapp.Student;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("students");
+        databaseReference = FirebaseDatabase.getInstance().getReference("persons");
 
         nameText = findViewById(R.id.editText1);
         classText = findViewById(R.id.editText2);
@@ -90,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(klas)) {
 
-            Student student = new Student(name,klas,uniqueID);
+            Person person = new Person(name,uniqueID,false,40,15);
 
-            databaseReference.child(uniqueID).setValue(student);
+            databaseReference.child(uniqueID).setValue(person);
 
             nameText.setText("");
             classText.setText("");
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void removeBtnClick(View view) {
         removeStudent();
+        startActivity(new Intent(this,MapsActivity.class));
     }
 
     public void removeStudent() {

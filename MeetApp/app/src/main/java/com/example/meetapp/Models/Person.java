@@ -5,16 +5,21 @@ import com.google.android.gms.maps.model.LatLng;
 public class Person {
 
     private String name;
-    private LatLng coordinates;
+    private double latitude;
+    private double longitude;
     private String UUID;
     private String lobbyUUID;
     private boolean isWaypoint;
 
-    public Person(String name, String UUID, String lobbyUUID, boolean isWaypoint) {
+    public Person (){}
+
+    public Person(String name, String UUID, boolean isWaypoint, double latitude, double longitude) {
         this.name = name;
         this.UUID = UUID;
         this.lobbyUUID = lobbyUUID;
         this.isWaypoint = isWaypoint;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Person(String name, String lobbyUUID, boolean isWaypoint) {
@@ -34,11 +39,7 @@ public class Person {
     }
 
     public LatLng getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(LatLng coordinates) {
-        this.coordinates = coordinates;
+        return new LatLng(latitude,longitude);
     }
 
     public String getUUID() {
@@ -63,6 +64,22 @@ public class Person {
 
     public void setWaypoint(boolean waypoint) {
         isWaypoint = waypoint;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     //endregion
