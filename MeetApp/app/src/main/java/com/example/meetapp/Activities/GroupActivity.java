@@ -105,7 +105,9 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
             databaseConnection.removeLobbyByUUID(lobbyUUID);
         }
 
-        if(databaseConnection.getPersonByUUID(pref.getString("PERSON", "")).getUUID().equals("")) {
+
+
+        if(databaseConnection.getPersonByUUID(pref.getString("PERSON", "")).getlobbyUUID().equals("")) {
             SharedPreferences.Editor edit = pref.edit();
             edit.putString("LOBBY", "empty");
             edit.commit();
