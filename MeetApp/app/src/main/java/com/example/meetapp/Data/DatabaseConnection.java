@@ -142,10 +142,6 @@ public class DatabaseConnection {
         return null;
     }
 
-    public void removePerson(Person person) {
-        dbRefPersons.child(person.getUUID()).removeValue();
-    }
-
     public ArrayList<Person> getPersons(){
         return this.persons;
     }

@@ -98,4 +98,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     }
 
+    @Override
+    public void onDatabaseWaypointChanged() {
+        
+    }
 }

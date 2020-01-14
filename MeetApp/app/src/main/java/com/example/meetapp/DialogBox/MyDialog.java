@@ -139,4 +139,9 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
     public void onDatabaseLobbyChanged() {
 
     }
+
+    @Override
+    public void onDatabaseWaypointChanged() {
+
+    }
 }
