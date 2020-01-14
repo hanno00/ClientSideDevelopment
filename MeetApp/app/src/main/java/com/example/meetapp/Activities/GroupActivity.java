@@ -57,8 +57,7 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
         setContentView(R.layout.activity_group);
         databaseConnection = new DatabaseConnection(this);
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
-//        me = databaseConnection.getPersonByUUID(pref.getString("PERSON",""));
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0);
         lobbyUUID = pref.getString("LOBBY","");
 
         TextView textView = findViewById(R.id.textViewLobby);
@@ -87,6 +86,11 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
 
     @Override
     public void onDatabaseLobbyChanged() {
+
+    }
+
+    @Override
+    public void onDatabaseWaypointChanged() {
 
     }
 }

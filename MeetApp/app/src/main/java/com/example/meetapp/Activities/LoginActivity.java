@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
 //        setTheme(android.R.style.Theme_Dialog);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        usernameText = findViewById(R.id.editTextName);
+        usernameText = findViewById(R.id.nameEditText);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
 
         databaseConnection = new DatabaseConnection(this);
 
-        b = findViewById(R.id.buttonLogin);
+        b = findViewById(R.id.button);
         myDialog = new MyDialog(this);
         nameField = findViewById(R.id.nameEditText);
 
@@ -93,6 +93,11 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
 
     @Override
     public void onDatabaseLobbyChanged() {
+
+    }
+
+    @Override
+    public void onDatabaseWaypointChanged() {
 
     }
 }

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.example.meetapp.Models.Lobby;
 import com.example.meetapp.Models.Person;
+import com.example.meetapp.Models.Waypoint;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,20 +21,49 @@ public class DatabaseConnection {
 
     private ArrayList<Lobby> lobbies;
     private ArrayList<Person> persons;
+    private ArrayList<Waypoint> waypoints;
 
     private DatabaseReference dbRefLobbies;
     private DatabaseReference dbRefPersons;
+    private DatabaseReference dbRefWaypoints;
 
     public DatabaseConnection(DatabaseListener databaseListener){
         this.databaseListener = databaseListener;
 
         this.lobbies = new ArrayList<>();
         this.persons = new ArrayList<>();
+        this.waypoints = new ArrayList<>();
 
         this.dbRefLobbies = FirebaseDatabase.getInstance().getReference("lobbies");
         this.dbRefPersons = FirebaseDatabase.getInstance().getReference("persons");
+        this.dbRefWaypoints = FirebaseDatabase.getInstance().getReference("waypoints");
 
         attachListeners();
+    }
+
+    public void insertWaypoint(Waypoint waypoint){
+        if (checkIfLobbyHasWaypoint(waypoint.getLobbyUUID())) {
+            removeWaypoint(waypoint.getLobbyUUID());
+        }
+        dbRefWaypoints.child(waypoint.getUUID()).setValue(waypoint);
+    }
+
+    public boolean checkIfLobbyHasWaypoint(String lobbyUUID){
+        for (Waypoint wp : waypoints) {
+            if (wp.getLobbyUUID().equals(lobbyUUID)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Waypoint getWaypointByUUID(String lobbyUUID){
+        for (Waypoint wp : waypoints) {
+            if (wp.getLobbyUUID().equals(lobbyUUID)) {
+                return wp;
+            }
+        }
+        return null;
     }
 
     public Person getPersonByUUID(String id){
@@ -62,12 +92,24 @@ public class DatabaseConnection {
         dbRefPersons.child(person.getUUID()).setValue(person);
     }
 
+    public void removeWaypoint(String lobbyUUID){
+        for (Waypoint wp : waypoints) {
+            if (wp.getLobbyUUID().equals(lobbyUUID)){
+                dbRefWaypoints.child(wp.getUUID()).removeValue();
+            }
+        }
+    }
+
     public void removeLobby(String name) {
         for (Lobby l : lobbies) {
             if (l.getName().equals(name)) {
                 dbRefLobbies.child(l.getUuid()).removeValue();
             }
         }
+    }
+
+    public void removePerson(Person person) {
+        dbRefPersons.child(person.getUUID()).removeValue();
     }
 
     public ArrayList<Person> getPersonsByLobbyUUID(String lobbyUUID){
@@ -108,6 +150,14 @@ public class DatabaseConnection {
         return this.lobbies;
     }
 
+    public ArrayList<Waypoint> getWaypoints() {
+        return waypoints;
+    }
+
+    public void setWaypoints(ArrayList<Waypoint> waypoints) {
+        this.waypoints = waypoints;
+    }
+
     //region listener
     private void attachListeners(){
         dbRefLobbies.addValueEventListener(new ValueEventListener() {
@@ -136,6 +186,23 @@ public class DatabaseConnection {
                     persons.add(person);
                 }
                 databaseListener.onDatabasePersonChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        dbRefWaypoints.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                waypoints.clear();
+                for (DataSnapshot node : dataSnapshot.getChildren()) {
+                    Waypoint waypoint = node.getValue(Waypoint.class);
+                    waypoints.add(waypoint);
+                }
+                databaseListener.onDatabaseWaypointChanged();
             }
 
             @Override

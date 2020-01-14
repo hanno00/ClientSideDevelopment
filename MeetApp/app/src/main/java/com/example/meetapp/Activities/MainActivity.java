@@ -41,11 +41,8 @@ public class MainActivity extends AppCompatActivity implements DatabaseListener 
 
     private Person person;
 
-    private ArrayList<Person> persons = new ArrayList<>();
     private ArrayList<Lobby> lobbies = new ArrayList<>();
     private SharedPreferences pref;
-
-    private Gson gson = new Gson();
 
     private DatabaseConnection databaseConnection;
 
@@ -128,6 +125,11 @@ public class MainActivity extends AppCompatActivity implements DatabaseListener 
 
     @Override
     public void onDatabaseLobbyChanged() {
+
+    }
+
+    @Override
+    public void onDatabaseWaypointChanged() {
 
     }
 }
