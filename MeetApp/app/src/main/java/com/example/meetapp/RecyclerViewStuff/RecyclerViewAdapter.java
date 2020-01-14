@@ -70,7 +70,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View view) {
                 Person p = mDataset.get(position);
-                dbConnection.removePerson(p);
+                p.setlobbyUUID("");
+                dbConnection.updatePerson(p);
             }
         });
 
