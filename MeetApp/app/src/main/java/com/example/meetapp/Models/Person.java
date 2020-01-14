@@ -24,13 +24,6 @@ public class Person implements Serializable {
         this.longitude = longitude;
     }
 
-    public Person(String name, String lobbyUUID, boolean isWaypoint) {
-        this.name = name;
-        this.lobbyUUID = lobbyUUID;
-        this.isWaypoint = isWaypoint;
-        this.UUID = java.util.UUID.randomUUID().toString();
-    }
-
     public Person(String name,boolean isWaypoint) {
         this.name = name;
         this.isWaypoint = isWaypoint;

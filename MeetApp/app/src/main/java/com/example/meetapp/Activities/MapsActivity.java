@@ -55,16 +55,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-
         mapFragment.getMapAsync(this);
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
-        Gson gson = new Gson();
-        me = gson.fromJson(pref.getString("PERSON",""), Person.class);
+        databaseConnection = new DatabaseConnection(this);
 
         locationTracker = new LocationTracker(this, this, (LocationManager) getSystemService(Context.LOCATION_SERVICE));
         directionApiManager = new DirectionApiManager(this, this);
-        databaseConnection = new DatabaseConnection(this);
+
     }
 
     @Override
@@ -83,17 +80,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onLocationChanged(Location location) {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if (me != null) {
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            me.setLatitude(location.getLatitude());
+            me.setLongitude(location.getLongitude());
 
-        me.setLatitude(location.getLatitude());
-        me.setLongitude(location.getLongitude());
-
-        databaseConnection.updatePerson(me);
+            databaseConnection.updatePerson(me);
 
 //        directionApiManager.generateDirections(new LatLng(51, 4),latLng);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-        Toast.makeText(this,"" + location.getLatitude() + "," + location.getLongitude(),Toast.LENGTH_LONG);
+            Toast.makeText(this, "" + location.getLatitude() + "," + location.getLongitude(), Toast.LENGTH_LONG);
+        }
     }
 
     @Override
@@ -109,9 +107,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Toast.makeText(this, "Could not connect with Directions Api", Toast.LENGTH_SHORT);
     }
 
+
     @Override
-    public void onDatabaseChanged() {
+    public void onDatabasePersonChanged() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA",0);
+        me = databaseConnection.getPersonByUUID(pref.getString("PERSON",""));
         drawMarkers(databaseConnection.getPersonsByLobbyUUID(me.getlobbyUUID()));
+    }
+
+    @Override
+    public void onDatabaseLobbyChanged() {
+
     }
 
     private void drawMarkers(ArrayList<Person> persons){

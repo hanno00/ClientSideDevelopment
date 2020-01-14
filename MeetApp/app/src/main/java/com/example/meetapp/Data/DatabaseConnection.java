@@ -36,6 +36,24 @@ public class DatabaseConnection {
         attachListeners();
     }
 
+    public Person getPersonByUUID(String id){
+        for (Person p : persons) {
+            if (p.getUUID().equals(id)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public Lobby getLobbyByUUID(String id){
+        for (Lobby l : lobbies) {
+            if (l.getUuid().equals(id)) {
+                return l;
+            }
+        }
+        return null;
+    }
+
     public void addLobby(String id, Lobby lobby){
         dbRefLobbies.child(id).setValue(lobby);
     }
@@ -100,7 +118,7 @@ public class DatabaseConnection {
                     Lobby lobby = node.getValue(Lobby.class);
                     lobbies.add(lobby);
                 }
-                databaseListener.onDatabaseChanged();
+                databaseListener.onDatabaseLobbyChanged();
             }
 
             @Override
@@ -117,7 +135,7 @@ public class DatabaseConnection {
                     Person person = node.getValue(Person.class);
                     persons.add(person);
                 }
-                databaseListener.onDatabaseChanged();
+                databaseListener.onDatabasePersonChanged();
             }
 
             @Override

@@ -45,11 +45,8 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
     private RecyclerView.Adapter adapter;
     private ArrayList<Person> persons = new ArrayList<>();
 
-    private Lobby lobby;
-    private Person me;
-
+    private String lobbyUUID;
     private DatabaseConnection databaseConnection;
-    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +55,11 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
         databaseConnection = new DatabaseConnection(this);
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
-        me = gson.fromJson(pref.getString("PERSON",""), Person.class);
-        lobby = gson.fromJson(pref.getString("LOBBY",""), Lobby.class);
+//        me = databaseConnection.getPersonByUUID(pref.getString("PERSON",""));
+        lobbyUUID = pref.getString("LOBBY","");
 
         TextView textView = findViewById(R.id.textViewLobby);
-        textView.setText(lobby.getUuid());
+        textView.setText(lobbyUUID);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -78,10 +75,15 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
     }
 
     @Override
-    public void onDatabaseChanged() {
-        persons = databaseConnection.getPersonsByLobbyUUID(lobby.getUuid());
+    public void onDatabasePersonChanged() {
+        persons = databaseConnection.getPersonsByLobbyUUID(lobbyUUID);
         adapter = new RecyclerViewAdapter(persons);
 
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onDatabaseLobbyChanged() {
+
     }
 }

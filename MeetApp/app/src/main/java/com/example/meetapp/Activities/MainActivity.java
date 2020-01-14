@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseListener 
 
     private ArrayList<Person> persons = new ArrayList<>();
     private ArrayList<Lobby> lobbies = new ArrayList<>();
+    private SharedPreferences pref;
 
     private Gson gson = new Gson();
 
@@ -53,12 +54,8 @@ public class MainActivity extends AppCompatActivity implements DatabaseListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("PERSON", 0); // 0 - for private mode
-
-        person = gson.fromJson(pref.getString("PERSON",""), Person.class);
-
         databaseConnection = new DatabaseConnection(this);
+        pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
 
         nameText = findViewById(R.id.editText1);
         classText = findViewById(R.id.editText2);
@@ -108,9 +105,10 @@ public class MainActivity extends AppCompatActivity implements DatabaseListener 
                 SharedPreferences.Editor editor = pref.edit();
 
                 person.setlobbyUUID(l.getUuid());
+                databaseConnection.updatePerson(person);
 
-                editor.putString("PERSON", gson.toJson(person));
-                editor.putString("LOBBY", gson.toJson(l));
+                editor.putString("PERSON", person.getUUID());
+                editor.putString("LOBBY", l.getUuid());
                 editor.commit();
 
                 Intent intent = new Intent(this, GroupActivity.class);
@@ -124,7 +122,12 @@ public class MainActivity extends AppCompatActivity implements DatabaseListener 
     }
 
     @Override
-    public void onDatabaseChanged() {
+    public void onDatabasePersonChanged() {
+        person = databaseConnection.getPersonByUUID(pref.getString("PERSON",""));
+    }
+
+    @Override
+    public void onDatabaseLobbyChanged() {
 
     }
 }
