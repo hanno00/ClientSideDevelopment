@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
     private EditText nameField, passwordField;
     private MyDialog myDialog;
     private DatabaseConnection databaseConnection;
-    final SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
         usernameText = findViewById(R.id.nameEditText);
 
         databaseConnection = new DatabaseConnection(this);
-
+        SharedPreferences pref = getSharedPreferences("DATA", 0); // 0 - for private mode
         b = findViewById(R.id.button);
         myDialog = new MyDialog(this);
         nameField = findViewById(R.id.nameEditText);
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
             @Override
             public void onClick(View view) {
                 if(!nameField.getText().toString().equals("")) {
-
+                    SharedPreferences pref = getSharedPreferences("DATA", 0); // 0 - for private mode
                     SharedPreferences.Editor editor = pref.edit();
 
                     Person person = new Person(usernameText.getText().toString(), false);
