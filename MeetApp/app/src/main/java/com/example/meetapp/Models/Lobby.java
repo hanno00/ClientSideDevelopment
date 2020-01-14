@@ -1,6 +1,8 @@
 package com.example.meetapp.Models;
 
-public class Lobby {
+import java.io.Serializable;
+
+public class Lobby implements Serializable {
 
     private String name;
     private String password;
@@ -12,6 +14,15 @@ public class Lobby {
         this.name = name;
         this.password = password;
         this.uuid = uuid;
+    }
+
+    @Override
+    public String toString() {
+        return "Lobby{" +
+                "name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", uuid='" + uuid + '\'' +
+                '}';
     }
 
     //region getters and setters

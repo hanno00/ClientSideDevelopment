@@ -1,5 +1,7 @@
 package com.example.meetapp.Data;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.example.meetapp.Models.Lobby;
@@ -34,15 +36,29 @@ public class DatabaseConnection {
         attachListeners();
     }
 
+    public void addLobby(String id, Lobby lobby){
+        dbRefLobbies.child(id).setValue(lobby);
+    }
+
     public void updatePerson(Person person){
         dbRefPersons.child(person.getUUID()).setValue(person);
+    }
+
+    public void removeLobby(String name) {
+        for (Lobby l : lobbies) {
+            if (l.getName().equals(name)) {
+                dbRefLobbies.child(l.getUuid()).removeValue();
+            }
+        }
     }
 
     public ArrayList<Person> getPersonsByLobbyUUID(String lobbyUUID){
         ArrayList<Person> persons = new ArrayList<>();
         for (Person person : this.persons) {
-            if (person.getlobbyUUID().equals(lobbyUUID)) {
-                persons.add(person);
+            if (person.getlobbyUUID() != null) {
+                if (person.getlobbyUUID().equals(lobbyUUID)) {
+                    persons.add(person);
+                }
             }
         }
         return persons;

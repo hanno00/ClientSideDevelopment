@@ -2,7 +2,9 @@ package com.example.meetapp.Models;
 
 import com.google.android.gms.maps.model.LatLng;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
 
     private String name;
     private double latitude;
@@ -25,6 +27,12 @@ public class Person {
     public Person(String name, String lobbyUUID, boolean isWaypoint) {
         this.name = name;
         this.lobbyUUID = lobbyUUID;
+        this.isWaypoint = isWaypoint;
+        this.UUID = java.util.UUID.randomUUID().toString();
+    }
+
+    public Person(String name,boolean isWaypoint) {
+        this.name = name;
         this.isWaypoint = isWaypoint;
         this.UUID = java.util.UUID.randomUUID().toString();
     }
@@ -80,6 +88,18 @@ public class Person {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", UUID='" + UUID + '\'' +
+                ", lobbyUUID='" + lobbyUUID + '\'' +
+                ", isWaypoint=" + isWaypoint +
+                '}';
     }
 
     //endregion

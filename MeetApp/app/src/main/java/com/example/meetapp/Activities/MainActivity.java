@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.meetapp.Data.DatabaseConnection;
+import com.example.meetapp.Data.DatabaseListener;
+import com.example.meetapp.Models.Lobby;
 import com.example.meetapp.Models.Person;
 import com.example.meetapp.R;
 import com.example.meetapp.Student;
@@ -21,11 +25,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DatabaseListener {
 
     private EditText nameText;
     private EditText classText;
@@ -33,18 +38,27 @@ public class MainActivity extends AppCompatActivity {
     private EditText name2Text;
     private EditText name3Text;
     private Button button;
-    private TextView textView;
 
-    private ArrayList<Student> students = new ArrayList<>();
+    private Person person;
 
-    DatabaseReference databaseReference;
+    private ArrayList<Person> persons = new ArrayList<>();
+    private ArrayList<Lobby> lobbies = new ArrayList<>();
+
+    private Gson gson = new Gson();
+
+    private DatabaseConnection databaseConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("persons");
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("PERSON", 0); // 0 - for private mode
+
+        person = gson.fromJson(pref.getString("PERSON",""), Person.class);
+
+        databaseConnection = new DatabaseConnection(this);
 
         nameText = findViewById(R.id.editText1);
         classText = findViewById(R.id.editText2);
@@ -52,50 +66,20 @@ public class MainActivity extends AppCompatActivity {
         name2Text = findViewById(R.id.editText3);
         name3Text = findViewById(R.id.editText4);
         button = findViewById(R.id.buttonAdd);
-        textView = findViewById(R.id.textView);
-
-        readStudents();
     }
-
-
-
-    public void readStudents(){
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                students.clear();
-                String tekst = "Students:\n";
-                for (DataSnapshot node : dataSnapshot.getChildren()) {
-                    Student student = node.getValue(Student.class);
-                    students.add(student);
-
-                    tekst += "Key: " + node.getKey() + "\nName: " + student.getName() + "\nKlas: " + student.getKlas() + "\n";
-                }
-                textView.setText(tekst);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
 
     public void addBtnClick(View view) {
-        addStudent();
+        addLobby();
     }
 
-    public void addStudent(){
+    public void addLobby(){
         String name = nameText.getText().toString();
-        String klas = classText.getText().toString();
-        String uniqueID = UUID.randomUUID().toString();
+        String password = classText.getText().toString();
 
-        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(klas)) {
+        if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(password)) {
 
-            Person person = new Person(name,uniqueID,false,40,15);
-
-            databaseReference.child(uniqueID).setValue(person);
+            String uniqueID = UUID.randomUUID().toString();
+            databaseConnection.addLobby(uniqueID,new Lobby(name,password,uniqueID));
 
             nameText.setText("");
             classText.setText("");
@@ -106,27 +90,41 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void removeBtnClick(View view) {
-        removeStudent();
-        startActivity(new Intent(this,MapsActivity.class));
+        removeLobby();
     }
 
-    public void removeStudent() {
-        for (Student s : students) {
-            if (s.getName().equals(name2Text.getText().toString())) {
-                databaseReference.child(s.getId()).removeValue();
-            }
-        }
+    public void removeLobby() {
+        databaseConnection.removeLobby(name2Text.getText().toString());
         name2Text.setText("");
+        Toast.makeText(this,lobbies.toString(), Toast.LENGTH_LONG).show();
     }
 
     public void editBtnClick(View view) {
-        for (Student s : students) {
-            if (s.getName().equals(name3Text.getText().toString())) {
-                s.setKlas(class2Text.getText().toString());
-                databaseReference.child(s.getId()).setValue(s);
+        for (Lobby l : databaseConnection.getLobbies()) {
+            if (l.getName().equals(name3Text.getText().toString()) && l.getPassword().equals(class2Text.getText().toString())) {
+                Toast.makeText(this,"Ingelogd bij:" + l.toString(), Toast.LENGTH_LONG).show();
+
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA",0);
+                SharedPreferences.Editor editor = pref.edit();
+
+                person.setlobbyUUID(l.getUuid());
+
+                editor.putString("PERSON", gson.toJson(person));
+                editor.putString("LOBBY", gson.toJson(l));
+                editor.commit();
+
+                Intent intent = new Intent(this, GroupActivity.class);
+
+                startActivity(intent);
+
             }
         }
         name3Text.setText("");
         class2Text.setText("");
+    }
+
+    @Override
+    public void onDatabaseChanged() {
+
     }
 }

@@ -3,6 +3,7 @@ package com.example.meetapp.Activities;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -51,13 +53,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+
         mapFragment.getMapAsync(this);
 
-        me = new Person("Hanno", "1234", false,1,1);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
+        Gson gson = new Gson();
+        me = gson.fromJson(pref.getString("PERSON",""), Person.class);
 
         locationTracker = new LocationTracker(this, this, (LocationManager) getSystemService(Context.LOCATION_SERVICE));
         directionApiManager = new DirectionApiManager(this, this);
@@ -68,8 +71,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                markers.add(mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Klik")));
+            }
+        });
     }
 
     @Override
@@ -80,14 +89,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         me.setLongitude(location.getLongitude());
 
         databaseConnection.updatePerson(me);
-//
-//        if (userLocation == null) {
-//            userLocation = mMap.addMarker(new MarkerOptions()
-//                    .position(latLng)
-//                    .title("User"));
-//        }
-//        userLocation.setPosition(latLng);
-//        userLocation.setTag(-1);
 
 //        directionApiManager.generateDirections(new LatLng(51, 4),latLng);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -110,23 +111,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onDatabaseChanged() {
-        // TODO databaseConnection.getPersonsByLobbyUUID(id);
-
-        drawMarkers(databaseConnection.getPersons());
+        drawMarkers(databaseConnection.getPersonsByLobbyUUID(me.getlobbyUUID()));
     }
 
     private void drawMarkers(ArrayList<Person> persons){
         for (Marker m : markers) { m.remove(); }
-
         markers.clear();
 
-        //TODO icon customization
         for (Person p : persons) {
-//            if (!p.getUUID().equals(me.getUUID())) {
+            if (p.getUUID().equals(me.getUUID())) {
+                markers.add(mMap.addMarker(new MarkerOptions()
+                    .position(p.getCoordinates())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_user2))
+                    .title("Me")));
+            } else {
                 markers.add(mMap.addMarker(new MarkerOptions()
                         .position(p.getCoordinates())
                         .title(p.getName())));
-//            }
+            }
         }
     }
 }
