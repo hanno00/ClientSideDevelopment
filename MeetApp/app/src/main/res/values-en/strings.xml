@@ -8,6 +8,9 @@
     <string name="password_hint">Password</string>
     <string name="name_hint">Name</string>
     <string name="catchphrase">Let\'s MeetApp!</string>
+    <string name="join">Join</string>
+    <string name="create">Create</string>
+    <string name="logout">Log out</string>
     <string name="welcome_text">Welcome to MeetApp! With this app meeting up with you friends was never easier! Pick a location with your friend and the application will show you the way! You can start the process by entering your name below.
 </string>
 

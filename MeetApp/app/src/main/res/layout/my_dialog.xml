@@ -13,7 +13,7 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginTop="224dp"
-        android:text="Aansluiten"
+        android:text="@string/join"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +38,7 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginTop="12dp"
-        android:text="Maken"
+        android:text="@string/create"
         app:layout_constraintEnd_toEndOf="@+id/joinGroupButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/joinGroupButton"

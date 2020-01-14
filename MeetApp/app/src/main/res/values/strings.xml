@@ -8,5 +8,8 @@
     <string name="password_hint">Wachtwoord</string>
     <string name="name_hint">Naam</string>
     <string name="catchphrase">Let\'s MeetApp!</string>
+    <string name="join">Aansluiten</string>
+    <string name="create">Maken</string>
+    <string name="logout">Log Uit</string>
     <string name="welcome_text">Welkom bij MeetApp! Met deze app kun je makkelijk samen met je vrienden een plek uitkiezen om naartoe toe gaan! Jullie kiezen een plek en de applicatie navigeert daarheen voor iedereen! Je begint door onderaan je naam in te voeren.</string>
 </resources>
