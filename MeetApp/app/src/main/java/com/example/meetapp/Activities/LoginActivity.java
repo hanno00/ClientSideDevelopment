@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
     private EditText nameField, passwordField;
     private MyDialog myDialog;
     private DatabaseConnection databaseConnection;
+    final SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,6 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         }
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0);
         if (!pref.getString("PERSON","empty").equals("empty")) {
             //HIER komt tie als je een person hebt
 
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
             @Override
             public void onClick(View view) {
                 if(!nameField.getText().toString().equals("")) {
-                    SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
+
                     SharedPreferences.Editor editor = pref.edit();
 
                     Person person = new Person(usernameText.getText().toString(), false);

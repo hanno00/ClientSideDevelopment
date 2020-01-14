@@ -101,6 +101,7 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
         if(databaseConnection.getPersonsByLobbyUUID(lobbyUUID).size() == 0) {
             databaseConnection.removeLobbyByUUID(lobbyUUID);
         }
+
     }
 
     @Override

@@ -53,6 +53,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private DatabaseConnection databaseConnection;
 
+    private SharedPreferences pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onDatabasePersonChanged() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0);
+        pref = getApplicationContext().getSharedPreferences("DATA", 0);
         me = databaseConnection.getPersonByUUID(pref.getString("PERSON", ""));
         drawMarkers(databaseConnection.getPersonsByLobbyUUID(me.getlobbyUUID()));
     }
