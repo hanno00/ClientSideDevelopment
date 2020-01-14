@@ -103,6 +103,16 @@ public class DatabaseConnection {
     public void removeLobby(String name) {
         for (Lobby l : lobbies) {
             if (l.getName().equals(name)) {
+                removeWaypoint(l.getUuid());
+                dbRefLobbies.child(l.getUuid()).removeValue();
+            }
+        }
+    }
+
+    public void removeLobbyByUUID(String uuid) {
+        for(Lobby l : lobbies) {
+            if (l.getUuid().equals(uuid)) {
+                removeWaypoint(uuid);
                 dbRefLobbies.child(l.getUuid()).removeValue();
             }
         }

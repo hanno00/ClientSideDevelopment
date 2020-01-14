@@ -60,17 +60,19 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
-                SharedPreferences.Editor editor = pref.edit();
+                if(!nameField.getText().toString().equals("")) {
+                    SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
+                    SharedPreferences.Editor editor = pref.edit();
 
-                Person person = new Person(usernameText.getText().toString(),false);
+                    Person person = new Person(usernameText.getText().toString(), false);
 
-                databaseConnection.updatePerson(person);
+                    databaseConnection.updatePerson(person);
 
-                editor.putString("PERSON", person.getUUID());
-                editor.commit();
+                    editor.putString("PERSON", person.getUUID());
+                    editor.commit();
 
-                myDialog.show();
+                    myDialog.show();
+                }
             }
         });
     }

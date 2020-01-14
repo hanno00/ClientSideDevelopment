@@ -19,4 +19,5 @@
     <string name="locationPermissionNotAccepted">Locatie permissie niet geaccepteerd.</string>
     <string name="notConnectWithDirections">Kon niet verbinden met de Directions API.</string>
     <string name="navigateToWaypoint">Wil je naar dit punt navigeren?</string>
+    <string name="invalid_name_or_pass">Voer een naam en wachtwoord in.</string>
 </resources>

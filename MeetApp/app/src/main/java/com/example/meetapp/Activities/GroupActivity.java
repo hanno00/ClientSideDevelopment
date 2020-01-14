@@ -97,11 +97,16 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
         adapter = new RecyclerViewAdapter(persons);
 
         recyclerView.setAdapter(adapter);
+
+        if(databaseConnection.getPersonsByLobbyUUID(lobbyUUID).size() == 0) {
+            databaseConnection.removeLobbyByUUID(lobbyUUID);
+        }
     }
 
     @Override
     public void onDatabaseLobbyChanged() {
-        textView.setText(databaseConnection.getLobbyByUUID(lobbyUUID).getName());
+        if(lobbyUUID != null)
+            textView.setText(databaseConnection.getLobbyByUUID(lobbyUUID).getName());
     }
 
     @Override

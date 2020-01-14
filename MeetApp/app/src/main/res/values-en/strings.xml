@@ -19,4 +19,5 @@
     <string name="locationPermissionNotAccepted">Location permission not accepted.</string>
     <string name="notConnectWithDirections">Could not connect with Directions Api</string>
     <string name="navigateToWaypoint">Do you want to navigate to this waypoint?</string>
+    <string name="invalid_name_or_pass">Enter a name and password.</string>
 </resources>

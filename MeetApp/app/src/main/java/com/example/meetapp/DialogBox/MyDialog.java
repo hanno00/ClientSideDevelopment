@@ -68,7 +68,6 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
                 String password = passwordField.getText().toString();
                 if (!dbConnection.checkIfLobbyExists(name,password)) {
 
-
                     Lobby l = new Lobby(name, password, java.util.UUID.randomUUID().toString());
 
                     dbConnection.addLobby(l.getUuid(), l);
@@ -83,7 +82,11 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
 
                     Intent intent = new Intent(view.getContext(), GroupActivity.class);
                     view.getContext().startActivity(intent);
+                } else if (name.equals("") && password.equals("")) {
+                    Toast.makeText(view.getContext(), R.string.invalid_name_or_pass, Toast.LENGTH_LONG).show();
                 } else {
+
+
                     Toast.makeText(view.getContext(), R.string.groupavailability, Toast.LENGTH_LONG).show();
                 }
             }
