@@ -30,6 +30,8 @@ public class Person implements Serializable {
         this.UUID = java.util.UUID.randomUUID().toString();
     }
 
+
+
     //region getters and setters
     public String getName() {
         return name;

@@ -50,9 +50,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         StringBuilder sb = new StringBuilder();
 
         sb.append("Name: ").append(mDataset.get(position).getName());
-        sb.append(" PersonUUID: ").append(mDataset.get(position).getUUID());
-        sb.append(" LobbyUUID: ").append(mDataset.get(position).getlobbyUUID());
-
 
         holder.tView.setText(sb.toString());
 

@@ -43,7 +43,10 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private ArrayList<Person> persons = new ArrayList<>();
+    private Button b;
+    private TextView textView;
+    private ArrayList<Person> persons;
+    private Lobby lobby;
 
     private String lobbyUUID;
     private DatabaseConnection databaseConnection;

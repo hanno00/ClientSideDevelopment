@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="400dp"
-    android:layout_height="200dp"
+    android:layout_height="300dp"
     android:background="#FFFFFF">
     <!-- Whatever your layout will consist of can go here -->
 
@@ -13,7 +13,7 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="220dp"
         android:text="Aansluiten"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,18 +22,18 @@
         android:id="@+id/createGroupButton"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="220dp"
         android:layout_marginEnd="32dp"
         android:text="Maken"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintHorizontal_bias="0.694"
         app:layout_constraintStart_toEndOf="@+id/joinGroupButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="272dp"
+        android:layout_height="51dp"
         android:layout_marginStart="64dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="64dp"
@@ -45,5 +45,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/dialogName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <EditText
+        android:id="@+id/dialogPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 public class LoginActivity extends AppCompatActivity implements DatabaseListener, ActivityCompat.OnRequestPermissionsResultCallback {
     private EditText usernameText;
     private Button b;
+    private EditText nameField, passwordField;
     private MyDialog myDialog;
     private DatabaseConnection databaseConnection;
 
@@ -44,6 +45,8 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
 
         b = findViewById(R.id.buttonLogin);
         myDialog = new MyDialog(this);
+        nameField = findViewById(R.id.nameEditText);
+
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
