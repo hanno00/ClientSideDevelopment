@@ -3,7 +3,9 @@ package com.example.meetapp.DialogBox;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.KeyboardShortcutGroup;
 import android.view.Menu;
 import android.view.View;
@@ -11,10 +13,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.example.meetapp.Activities.GroupActivity;
+import com.example.meetapp.Data.DatabaseConnection;
+import com.example.meetapp.Data.DatabaseListener;
 import com.example.meetapp.Models.Lobby;
 import com.example.meetapp.Models.Person;
 import com.example.meetapp.R;
@@ -23,12 +28,13 @@ import com.example.meetapp.R;
 import java.util.List;
 
 
-public class MyDialog extends Dialog implements android.view.View.OnClickListener {
+public class MyDialog extends Dialog implements android.view.View.OnClickListener, DatabaseListener {
 
     public Activity activity;
     private Button createGroup, joinGroup;
     private TextView t;
     private EditText nameField, passwordField;
+    private DatabaseConnection dbConnection;
 
     public MyDialog() {
         super(null);
@@ -46,6 +52,8 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.my_dialog);
 
+        dbConnection = new DatabaseConnection(this);
+
         nameField = findViewById(R.id.dialogName);
         passwordField = findViewById(R.id.dialogPassword);
 
@@ -56,11 +64,20 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
         createGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: add new lobby to firebase database
                 String name = nameField.getText().toString();
                 String password = passwordField.getText().toString();
-                
 
+                Lobby l = new Lobby(name, password, java.util.UUID.randomUUID().toString());
+
+                dbConnection.addLobby(l.getUuid(), l);
+                SharedPreferences pref = view.getContext().getSharedPreferences("DATA", 0);
+                SharedPreferences.Editor edit = pref.edit();
+                Person p = dbConnection.getPersonByUUID(pref.getString("PERSON",""));
+                edit.putString("LOBBY", l.getUuid());
+                edit.commit();
+
+                p.setlobbyUUID(l.getUuid());
+                dbConnection.updatePerson(p);
 
                 Intent intent = new Intent(view.getContext(), GroupActivity.class);
                 view.getContext().startActivity(intent);
@@ -70,12 +87,29 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
         joinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: enter the uuid of the desired lobby and join it.
 
+                String name = nameField.getText().toString();
+                String password = passwordField.getText().toString();
 
+                if(dbConnection.checkIfLobbyExists(name, password)) {
+                    SharedPreferences pref = view.getContext().getSharedPreferences("DATA", 0);
+                    SharedPreferences.Editor edit = pref.edit();
 
-                Intent intent = new Intent(view.getContext(), GroupActivity.class);
-                view.getContext().startActivity(intent);
+                    Person p = dbConnection.getPersonByUUID(pref.getString("PERSON",""));
+                    Lobby l = dbConnection.getLobby(name, password);
+
+                    edit.putString("LOBBY", l.getUuid());
+                    edit.commit();
+
+                    p.setlobbyUUID(l.getUuid());
+                    dbConnection.updatePerson(p);
+
+                    Intent intent = new Intent(view.getContext(), GroupActivity.class);
+                    view.getContext().startActivity(intent);
+                } else {
+                    Toast.makeText(view.getContext(), "Naam of wachtwoord incorrect!", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -93,6 +127,16 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void onDatabasePersonChanged() {
+
+    }
+
+    @Override
+    public void onDatabaseLobbyChanged() {
 
     }
 }

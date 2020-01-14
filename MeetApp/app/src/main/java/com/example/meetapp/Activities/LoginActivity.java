@@ -21,7 +21,6 @@ import com.example.meetapp.Data.DatabaseListener;
 import com.example.meetapp.DialogBox.MyDialog;
 import com.example.meetapp.Models.Person;
 import com.example.meetapp.R;
-import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity implements DatabaseListener, ActivityCompat.OnRequestPermissionsResultCallback {
     private EditText usernameText;
@@ -61,8 +60,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
                 editor.putString("PERSON", person.getUUID());
                 editor.commit();
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
+                myDialog.show();
             }
         });
     }
