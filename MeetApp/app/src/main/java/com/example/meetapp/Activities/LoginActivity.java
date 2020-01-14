@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         for (int i = 0; i < grantResults.length; i++) {
             if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                Toast.makeText(this, "Location permission not accepted.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.locationPermissionNotAccepted, Toast.LENGTH_LONG).show();
             }
         }
     }

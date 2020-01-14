@@ -16,4 +16,7 @@
     <string name="namepasswordincorrect">Naam of wachtwoord incorrect!</string>
     <string name="centerCamera">Center camera</string>
     <string name="begin">Begin</string>
+    <string name="locationPermissionNotAccepted">Locatie permissie niet geaccepteerd.</string>
+    <string name="notConnectWithDirections">Kon niet verbinden met de Directions API.</string>
+    <string name="navigateToWaypoint">Wil je naar dit punt navigeren?</string>
 </resources>

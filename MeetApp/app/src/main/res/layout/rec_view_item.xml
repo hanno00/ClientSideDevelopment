@@ -16,6 +16,7 @@
         android:textAlignment="center"
         android:textSize="26dp"
         android:textStyle="bold"
+        style="@style/normalText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.009"

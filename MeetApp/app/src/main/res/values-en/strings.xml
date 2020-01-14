@@ -16,4 +16,7 @@
     <string name="namepasswordincorrect">Name or password is incorrect!</string>
     <string name="centerCamera">Center camera</string>
     <string name="begin">Begin</string>
+    <string name="locationPermissionNotAccepted">Location permission not accepted.</string>
+    <string name="notConnectWithDirections">Could not connect with Directions Api</string>
+    <string name="navigateToWaypoint">Do you want to navigate to this waypoint?</string>
 </resources>

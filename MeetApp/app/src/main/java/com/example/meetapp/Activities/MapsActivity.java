@@ -1,6 +1,7 @@
 package com.example.meetapp.Activities;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -111,7 +112,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onResponseError(Error error) {
-        Toast.makeText(this, "Could not connect with Directions Api", Toast.LENGTH_SHORT);
+        Toast.makeText(this, R.string.notConnectWithDirections, Toast.LENGTH_SHORT);
     }
 
 
@@ -134,8 +135,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (marker.getTag().equals("Waypoint")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Do you want to navigate to this waypoint?")
-                    .setTitle("Title")
+            builder.setMessage(R.string.navigateToWaypoint)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -149,7 +149,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     });
 
-            builder.create().show();
+            final AlertDialog alertDialog = builder.create();
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+                    alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorBlack));
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+            });
+            alertDialog.show();
         }
         return false;
     }
@@ -192,7 +200,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             waypointMarker = mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(waypoint.getLatitude(), waypoint.getLongitude()))
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
-                    .title(getString(R.string.Waypoint)));
+                    .title("Waypoint"));
             waypointMarker.setTag("Waypoint");
         }
     }
