@@ -2,7 +2,7 @@
     <string name="app_name">MeetApp</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_group">GroupActivity</string>
-    <string name="dialogBoxText">Do you want to join a group, of create one?</string>
+    <string name="dialogBoxText">Do you want to join a group or create one?</string>
     <string name="naam_field">Name</string>
     <string name="leave_group">Leave group</string>
     <string name="password_hint">Password</string>
@@ -11,7 +11,10 @@
     <string name="join">Join</string>
     <string name="create">Create</string>
     <string name="logout">Log out</string>
-    <string name="welcome_text">Welcome to MeetApp! With this app meeting up with you friends was never easier! Pick a location with your friend and the application will show you the way! You can start the process by entering your name below.
+    <string name="welcome_text">Welcome to MeetApp! With this app meeting up with your friends was never easier! Pick a location with your friend and the application will show you the way! You can start the process by entering your name below.
 </string>
+    <string name="groupavailability">Group already exists!</string>
+    <string name="namepasswordincorrect">Name or password is incorrect!</string>
+    <string name="centerCamera">Center camera</string>
 
 </resources>

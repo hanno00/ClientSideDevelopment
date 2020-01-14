@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
@@ -35,6 +36,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationTrackerListener, DirectionApiListener, DatabaseListener, GoogleMap.OnMarkerClickListener {
+
+    private boolean isMoved = false;
 
     private Person me;
     private GoogleMap mMap;
@@ -89,8 +92,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             databaseConnection.updatePerson(me);
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
+            if (!isMoved) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.moveCamera(CameraUpdateFactory.zoomTo(10));
+                isMoved = true;
+            }
             Toast.makeText(this, "" + location.getLatitude() + "," + location.getLongitude(), Toast.LENGTH_LONG);
         }
     }
@@ -160,6 +166,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         markers.clear();
 
         for (Person p : persons) {
+            if (p.getLongitude() == 0 && p.getLatitude() == 0)
+                return;
             if (p.getUUID().equals(me.getUUID())) {
                 markers.add(mMap.addMarker(new MarkerOptions()
                         .position(p.getCoordinates())
@@ -187,5 +195,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .title(getString(R.string.Waypoint)));
             waypointMarker.setTag("Waypoint");
         }
+    }
+
+    public void buttonCenterClick(View view) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(me.getLatitude(),me.getLongitude())));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(10));
     }
 }

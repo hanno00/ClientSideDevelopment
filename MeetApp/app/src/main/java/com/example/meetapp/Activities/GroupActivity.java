@@ -43,8 +43,7 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
 
         Lobby l = databaseConnection.getLobbyByUUID(lobbyUUID);
 
-        TextView textView = findViewById(R.id.textViewLobby);
-        textView.setText(lobbyUUID);
+        textView = findViewById(R.id.textViewLobby);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -66,8 +65,28 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
                 Person p = databaseConnection.getPersonByUUID(pref.getString("PERSON", ""));
                 p.setlobbyUUID("");
                 databaseConnection.updatePerson(p);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("LOBBY","empty");
+                editor.commit();
 
-                new MyDialog((Activity) view.getContext()).show();
+                startActivity(new Intent(view.getContext(),LoginActivity.class));
+            }
+        });
+
+        findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
+                Person p = databaseConnection.getPersonByUUID(pref.getString("PERSON", ""));
+                p.setlobbyUUID("");
+                databaseConnection.removePerson(p);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("LOBBY","empty");
+                editor.putString("PERSON","empty");
+                editor.commit();
+
+                Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -82,7 +101,7 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
 
     @Override
     public void onDatabaseLobbyChanged() {
-
+        textView.setText(databaseConnection.getLobbyByUUID(lobbyUUID).getName());
     }
 
     @Override

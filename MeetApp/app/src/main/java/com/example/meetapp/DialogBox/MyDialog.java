@@ -66,21 +66,26 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
             public void onClick(View view) {
                 String name = nameField.getText().toString();
                 String password = passwordField.getText().toString();
+                if (!dbConnection.checkIfLobbyExists(name,password)) {
 
-                Lobby l = new Lobby(name, password, java.util.UUID.randomUUID().toString());
 
-                dbConnection.addLobby(l.getUuid(), l);
-                SharedPreferences pref = view.getContext().getSharedPreferences("DATA", 0);
-                SharedPreferences.Editor edit = pref.edit();
-                Person p = dbConnection.getPersonByUUID(pref.getString("PERSON",""));
-                edit.putString("LOBBY", l.getUuid());
-                edit.commit();
+                    Lobby l = new Lobby(name, password, java.util.UUID.randomUUID().toString());
 
-                p.setlobbyUUID(l.getUuid());
-                dbConnection.updatePerson(p);
+                    dbConnection.addLobby(l.getUuid(), l);
+                    SharedPreferences pref = view.getContext().getSharedPreferences("DATA", 0);
+                    SharedPreferences.Editor edit = pref.edit();
+                    Person p = dbConnection.getPersonByUUID(pref.getString("PERSON", ""));
+                    edit.putString("LOBBY", l.getUuid());
+                    edit.commit();
 
-                Intent intent = new Intent(view.getContext(), GroupActivity.class);
-                view.getContext().startActivity(intent);
+                    p.setlobbyUUID(l.getUuid());
+                    dbConnection.updatePerson(p);
+
+                    Intent intent = new Intent(view.getContext(), GroupActivity.class);
+                    view.getContext().startActivity(intent);
+                } else {
+                    Toast.makeText(view.getContext(), R.string.groupavailability, Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -107,7 +112,7 @@ public class MyDialog extends Dialog implements android.view.View.OnClickListene
                     Intent intent = new Intent(view.getContext(), GroupActivity.class);
                     view.getContext().startActivity(intent);
                 } else {
-                    Toast.makeText(view.getContext(), "Naam of wachtwoord incorrect!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), R.string.namepasswordincorrect, Toast.LENGTH_LONG).show();
                 }
 
             }

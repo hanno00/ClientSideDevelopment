@@ -11,7 +11,6 @@ public class Person implements Serializable {
     private double longitude;
     private String UUID;
     private String lobbyUUID;
-    private boolean isWaypoint;
 
     public Person (){}
 
@@ -19,14 +18,12 @@ public class Person implements Serializable {
         this.name = name;
         this.UUID = UUID;
         this.lobbyUUID = lobbyUUID;
-        this.isWaypoint = isWaypoint;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     public Person(String name,boolean isWaypoint) {
         this.name = name;
-        this.isWaypoint = isWaypoint;
         this.UUID = java.util.UUID.randomUUID().toString();
     }
 
@@ -61,14 +58,6 @@ public class Person implements Serializable {
         this.lobbyUUID = lobbyId;
     }
 
-    public boolean isWaypoint() {
-        return isWaypoint;
-    }
-
-    public void setWaypoint(boolean waypoint) {
-        isWaypoint = waypoint;
-    }
-
     public double getLatitude() {
         return latitude;
     }
@@ -93,7 +82,6 @@ public class Person implements Serializable {
                 ", longitude=" + longitude +
                 ", UUID='" + UUID + '\'' +
                 ", lobbyUUID='" + lobbyUUID + '\'' +
-                ", isWaypoint=" + isWaypoint +
                 '}';
     }
 

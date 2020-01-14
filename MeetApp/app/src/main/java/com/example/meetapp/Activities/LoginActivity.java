@@ -36,16 +36,26 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
         setContentView(R.layout.activity_login);
         usernameText = findViewById(R.id.nameEditText);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-
         databaseConnection = new DatabaseConnection(this);
 
         b = findViewById(R.id.button);
         myDialog = new MyDialog(this);
         nameField = findViewById(R.id.nameEditText);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0);
+        if (!pref.getString("PERSON","empty").equals("empty")) {
+            //HIER komt tie als je een person hebt
+
+            if (!pref.getString("LOBBY","empty").equals("empty")) {
+                //HIER KOMT TIE ALS JE GEEN GROEP HEBT
+                Intent intent = new Intent(this,GroupActivity.class);
+                startActivity(intent);
+            }
+            myDialog.show();
+        }
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
