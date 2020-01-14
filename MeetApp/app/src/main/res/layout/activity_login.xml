@@ -24,7 +24,7 @@
         android:layout_width="96dp"
         android:layout_height="42dp"
         android:layout_marginTop="32dp"
-        android:text="Begin"
+        android:text="@string/begin"
         app:layout_constraintEnd_toEndOf="@+id/nameEditText"
         app:layout_constraintStart_toStartOf="@+id/nameEditText"
         app:layout_constraintTop_toBottomOf="@+id/nameEditText" />

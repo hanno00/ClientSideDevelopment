@@ -11,10 +11,9 @@
     <string name="join">Join</string>
     <string name="create">Create</string>
     <string name="logout">Log out</string>
-    <string name="welcome_text">Welcome to MeetApp! With this app meeting up with your friends was never easier! Pick a location with your friend and the application will show you the way! You can start the process by entering your name below.
-</string>
+    <string name="welcome_text">Welcome to MeetApp! With this app meeting up with your friends was never easier! Pick a location with your friend and the application will show you the way! You can start the process by entering your name below.</string>
     <string name="groupavailability">Group already exists!</string>
     <string name="namepasswordincorrect">Name or password is incorrect!</string>
     <string name="centerCamera">Center camera</string>
-
+    <string name="begin">Begin</string>
 </resources>

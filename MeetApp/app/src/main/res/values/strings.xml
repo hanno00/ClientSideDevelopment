@@ -12,8 +12,8 @@
     <string name="create">Maken</string>
     <string name="logout">Log Uit</string>
     <string name="welcome_text">Welkom bij MeetApp! Met deze app kun je makkelijk samen met je vrienden een plek uitkiezen om naartoe toe gaan! Jullie kiezen een plek en de applicatie navigeert daarheen voor iedereen! Je begint door onderaan je naam in te voeren.</string>
-    <string name="Waypoint">Waypoint</string>
     <string name="groupavailability">Groep bestaat al!</string>
     <string name="namepasswordincorrect">Naam of wachtwoord incorrect!</string>
     <string name="centerCamera">Center camera</string>
+    <string name="begin">Begin</string>
 </resources>
