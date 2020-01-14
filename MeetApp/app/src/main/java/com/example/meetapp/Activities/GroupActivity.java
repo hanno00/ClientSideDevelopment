@@ -28,6 +28,7 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
     private TextView textView;
     private ArrayList<Person> persons;
     private Lobby lobby;
+    private SharedPreferences pref;
 
     private String lobbyUUID;
     private DatabaseConnection databaseConnection;
@@ -38,7 +39,7 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
         setContentView(R.layout.activity_group);
         databaseConnection = new DatabaseConnection(this);
 
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0);
+        pref = getApplicationContext().getSharedPreferences("DATA", 0);
         lobbyUUID = pref.getString("LOBBY","");
 
         Lobby l = databaseConnection.getLobbyByUUID(lobbyUUID);
@@ -61,7 +62,7 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
             @Override
             public void onClick(View view) {
 
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
+                pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
                 Person p = databaseConnection.getPersonByUUID(pref.getString("PERSON", ""));
                 p.setlobbyUUID("");
                 databaseConnection.updatePerson(p);
@@ -76,7 +77,7 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
         findViewById(R.id.logoutButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
+                pref = getApplicationContext().getSharedPreferences("DATA", 0); // 0 - for private mode
                 Person p = databaseConnection.getPersonByUUID(pref.getString("PERSON", ""));
                 p.setlobbyUUID("");
                 databaseConnection.removePerson(p);
@@ -98,10 +99,19 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
 
         recyclerView.setAdapter(adapter);
 
+
+
         if(databaseConnection.getPersonsByLobbyUUID(lobbyUUID).size() == 0) {
             databaseConnection.removeLobbyByUUID(lobbyUUID);
         }
 
+        if(databaseConnection.getPersonByUUID(pref.getString("PERSON", "")).getUUID().equals("")) {
+            SharedPreferences.Editor edit = pref.edit();
+            edit.putString("LOBBY", "empty");
+            edit.commit();
+
+            startActivity(new Intent(this, LoginActivity.class));
+        }
     }
 
     @Override
