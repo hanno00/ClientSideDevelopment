@@ -25,7 +25,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -44,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseListener 
     private ArrayList<Person> persons = new ArrayList<>();
     private ArrayList<Lobby> lobbies = new ArrayList<>();
     private SharedPreferences pref;
-
-    private Gson gson = new Gson();
 
     private DatabaseConnection databaseConnection;
 

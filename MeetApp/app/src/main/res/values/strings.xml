@@ -4,5 +4,6 @@
     <string name="title_activity_group">GroupActivity</string>
     <string name="dialogBoxText">Wil je je bij een groep aansluiten, of wil je je eigen groep maken?</string>
     <string name="naam_field">naam</string>
+    <string name="leave_group">Verlaat groep</string>
     <string name="welcome_text">Welkom bij MeetApp! Met deze app kun je makkelijk samen met je vrienden een plek uitkiezen om naartoe toe gaan! Jullie kiezen een plek en de applicatie navigeert daarheen voor iedereen! Je begint door onderaan je naam in te voeren.</string>
 </resources>

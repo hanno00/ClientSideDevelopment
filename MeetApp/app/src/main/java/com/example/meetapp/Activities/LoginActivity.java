@@ -21,7 +21,6 @@ import com.example.meetapp.Data.DatabaseListener;
 import com.example.meetapp.DialogBox.MyDialog;
 import com.example.meetapp.Models.Person;
 import com.example.meetapp.R;
-import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity implements DatabaseListener, ActivityCompat.OnRequestPermissionsResultCallback {
     private EditText usernameText;
@@ -35,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
 //        setTheme(android.R.style.Theme_Dialog);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        usernameText = findViewById(R.id.editTextName);
+        usernameText = findViewById(R.id.nameEditText);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             askPermission(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -43,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
 
         databaseConnection = new DatabaseConnection(this);
 
-        b = findViewById(R.id.buttonLogin);
+        b = findViewById(R.id.button);
         myDialog = new MyDialog(this);
         nameField = findViewById(R.id.nameEditText);
 
@@ -61,8 +60,7 @@ public class LoginActivity extends AppCompatActivity implements DatabaseListener
                 editor.putString("PERSON", person.getUUID());
                 editor.commit();
 
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
+                myDialog.show();
             }
         });
     }

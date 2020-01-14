@@ -30,7 +30,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 

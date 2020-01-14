@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
-    android:layout_width="400dp"
-    android:layout_height="300dp"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
     android:background="#FFFFFF">
     <!-- Whatever your layout will consist of can go here -->
 
@@ -12,22 +12,10 @@
         android:id="@+id/joinGroupButton"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="224dp"
         android:text="Aansluiten"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/createGroupButton"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="220dp"
-        android:layout_marginEnd="32dp"
-        android:text="Maken"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.694"
-        app:layout_constraintStart_toEndOf="@+id/joinGroupButton"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -41,32 +29,46 @@
         android:text="@string/dialogBoxText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/createGroupButton"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:text="Maken"
+        app:layout_constraintEnd_toEndOf="@+id/joinGroupButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/joinGroupButton"
+        app:layout_constraintTop_toBottomOf="@+id/joinGroupButton" />
+
     <EditText
         android:id="@+id/dialogName"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="17dp"
         android:ems="10"
+        android:hint="Name"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <EditText
         android:id="@+id/dialogPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.50"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialogName" />
+        app:layout_constraintTop_toBottomOf="@+id/dialogName"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

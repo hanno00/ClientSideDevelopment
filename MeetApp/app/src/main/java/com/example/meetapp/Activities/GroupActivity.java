@@ -1,11 +1,13 @@
 package com.example.meetapp.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.meetapp.Data.DatabaseConnection;
 import com.example.meetapp.Data.DatabaseListener;
+import com.example.meetapp.DialogBox.MyDialog;
 import com.example.meetapp.Models.Lobby;
 import com.example.meetapp.Models.Person;
 import com.example.meetapp.RecyclerViewStuff.RecyclerViewAdapter;
@@ -33,7 +35,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
@@ -43,7 +44,6 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private Button b;
     private TextView textView;
     private ArrayList<Person> persons;
     private Lobby lobby;
@@ -73,6 +73,13 @@ public class GroupActivity extends AppCompatActivity implements DatabaseListener
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), MapsActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MyDialog((Activity) view.getContext()).show();
             }
         });
     }
